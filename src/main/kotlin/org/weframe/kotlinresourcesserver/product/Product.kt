@@ -1,4 +1,4 @@
-package org.weframe.kotlinresourcesserver
+package org.weframe.kotlinresourcesserver.product
 
 import javax.persistence.*
 

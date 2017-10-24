@@ -1,4 +1,4 @@
-package org.weframe.kotlinresourcesserver.backboard
+package org.weframe.kotlinresourcesserver.product.backboard
 
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param

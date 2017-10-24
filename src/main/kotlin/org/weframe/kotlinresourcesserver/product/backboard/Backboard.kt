@@ -1,7 +1,7 @@
-package org.weframe.kotlinresourcesserver.backboard
+package org.weframe.kotlinresourcesserver.product.backboard
 
-import org.weframe.kotlinresourcesserver.Product
-import org.weframe.kotlinresourcesserver.picture.Picture
+import org.weframe.kotlinresourcesserver.product.Product
+import org.weframe.kotlinresourcesserver.product.picture.Picture
 import javax.persistence.*
 
 @Entity

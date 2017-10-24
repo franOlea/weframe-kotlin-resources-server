@@ -1,4 +1,4 @@
-package org.weframe.kotlinresourcesserver.picture
+package org.weframe.kotlinresourcesserver.product.picture
 
 import javax.persistence.*
 
