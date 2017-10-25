@@ -4,10 +4,8 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class KotlinResourcesServerApplication {
+class KotlinResourcesServerApplication
 
-    fun main(args: Array<String>) {
-        SpringApplication.run(KotlinResourcesServerApplication::class.java, *args)
-    }
-
+fun main(args: Array<String>) {
+    SpringApplication.run(KotlinResourcesServerApplication::class.java, *args)
 }
