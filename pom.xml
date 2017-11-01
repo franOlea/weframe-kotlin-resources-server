@@ -24,7 +24,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<kotlin.version>1.1.51</kotlin.version>
-	</properties>
+        <auth0.spring.security.api.version>1.0.0-rc.3</auth0.spring.security.api.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -57,7 +58,11 @@
 			<artifactId>kotlin-reflect</artifactId>
 			<version>${kotlin.version}</version>
 		</dependency>
-
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>auth0-spring-security-api</artifactId>
+            <version>${auth0.spring.security.api.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
