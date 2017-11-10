@@ -4,6 +4,9 @@ import org.weframe.kotlinresourcesserver.Product
 import org.weframe.kotlinresourcesserver.picture.Picture
 import javax.persistence.*
 
+/**
+ * Represents a backboard product.
+ */
 @Entity
 @Table(name = "BACK_BOARDS")
 open class Backboard : Product {
@@ -17,6 +20,9 @@ open class Backboard : Product {
     @Column(name= "M2_PRICE", nullable = false)
     var m2Price: Float? = null
 
+    /**
+     * DO NOT USE, needed for JPA only.
+     */
     constructor()
 
     constructor(name: String, description: String, picture: Picture, m2Price: Float)

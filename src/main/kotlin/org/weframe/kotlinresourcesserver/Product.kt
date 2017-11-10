@@ -2,6 +2,9 @@ package org.weframe.kotlinresourcesserver
 
 import javax.persistence.*
 
+/**
+ * Represents the abstract product.
+ */
 @MappedSuperclass
 abstract class Product {
 
@@ -16,6 +19,9 @@ abstract class Product {
     @Column(name = "description", nullable = false, unique = true)
     var description: String? = null
 
+    /**
+     * DO NOT USE, needed for JPA only.
+     */
     constructor()
 
     @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
