@@ -42,4 +42,5 @@ class MatTypeTest {
         assertThat(matType.m2Price, `is`(m2Price))
         assertThat(matType.toString(), equalTo(MatType(name, description, picture!!, m2Price).toString()))
     }
+
 }

@@ -32,7 +32,7 @@ open class MatType : Product {
     }
 
     override fun toString(): String {
-        return "MatType(picture=$picture, m2Price=$m2Price)"
+        return "MatType(id=$id, name=$name, picture=$picture, m2Price=$m2Price)"
     }
 
 }
