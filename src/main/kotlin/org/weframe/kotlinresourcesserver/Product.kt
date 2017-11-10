@@ -16,6 +16,8 @@ open class Product {
     @Column(name = "description", nullable = false, unique = true)
     var description: String? = null
 
+    constructor()
+
     @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
     constructor(name: String, description: String) {
         this.name = name
