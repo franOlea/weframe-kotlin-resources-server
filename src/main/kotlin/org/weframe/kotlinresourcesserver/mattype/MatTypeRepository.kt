@@ -9,4 +9,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
 interface MatTypeRepository : PagingAndSortingRepository<MatType, Long> {
 
     fun findByNameLike(@Param("name") name: String): MatType
+
 }
