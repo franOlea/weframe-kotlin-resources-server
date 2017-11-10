@@ -3,7 +3,7 @@ package org.weframe.kotlinresourcesserver
 import javax.persistence.*
 
 @MappedSuperclass
-open class Product {
+abstract class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
