@@ -17,7 +17,8 @@ open class Picture {
     @Column(name = "KEY", nullable = false, unique = true)
     var key: String? = null
 
-    @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
+    constructor()
+
     constructor(name: String, key: String) {
         this.name = name
         this.key = key

@@ -19,7 +19,6 @@ open class Backboard : Product {
 
     constructor()
 
-    @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
     constructor(name: String, description: String, picture: Picture, m2Price: Float)
             : super(name, description) {
         this.picture = picture
