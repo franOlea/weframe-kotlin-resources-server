@@ -24,7 +24,6 @@ abstract class Product {
      */
     constructor()
 
-    @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
     constructor(name: String, description: String) {
         this.name = name
         this.description = description
