@@ -21,7 +21,7 @@ class BackboardTest {
     }
 
     @test fun create() {
-        val backboard: Backboard = Backboard(name, description, picture!!, m2Price)
+        val backboard = Backboard(name, description, picture!!, m2Price)
         assertThat(backboard.name, `is`(name))
         assertThat(backboard.description, `is`(description))
         assertThat(backboard.picture, `is`(picture))
@@ -30,7 +30,7 @@ class BackboardTest {
     }
 
     @test fun setters() {
-        val backboard: Backboard = Backboard()
+        val backboard = Backboard()
         backboard.name = name
         backboard.description = description
         backboard.picture = picture

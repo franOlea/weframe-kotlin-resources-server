@@ -13,7 +13,7 @@ class PictureTest {
     private val id :Long = 0
 
     @test fun create() {
-        val picture: Picture = Picture(name, key)
+        val picture = Picture(name, key)
 
         assertThat(picture.name, `is`(name))
         assertThat(picture.key, `is`(key))
@@ -21,7 +21,7 @@ class PictureTest {
     }
 
     @test fun setters() {
-        val picture: Picture = Picture()
+        val picture = Picture()
         picture.id = id
         picture.name = name
         picture.key = key
