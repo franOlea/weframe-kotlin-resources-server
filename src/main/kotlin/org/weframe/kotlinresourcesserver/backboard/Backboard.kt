@@ -9,7 +9,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "BACK_BOARDS")
-open class Backboard : Product {
+class Backboard : Product {
 
     @ManyToOne(
             fetch = FetchType.EAGER,

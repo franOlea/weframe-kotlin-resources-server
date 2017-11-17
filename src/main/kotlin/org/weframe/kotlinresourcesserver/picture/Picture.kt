@@ -12,7 +12,7 @@ open class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    var id: Long = 0
+    var id: Long? = null
 
     @Column(name = "NAME", nullable = false)
     var name: String? = null
