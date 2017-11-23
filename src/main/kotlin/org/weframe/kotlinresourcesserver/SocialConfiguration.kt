@@ -12,11 +12,11 @@ import org.springframework.web.context.request.NativeWebRequest
 
 
 @Configuration
-class SocialConfiguration {
+open class SocialConfiguration {
 
     @Bean
-    fun authSignInAdapter(): SignInAdapter? {
-        return SignInAdapter { s: String, connection: Connection<*>, _: NativeWebRequest ->
+    open fun authSignInAdapter(): SignInAdapter? {
+        return SignInAdapter { s: String, connection: Connection<*>, request: NativeWebRequest ->
             val facebook: Facebook = connection.api as Facebook
             val userProfile = facebook.fetchObject("me", User::class.java, "id", "email", "first_name", "last_name", "name")
             val username = userProfile.name
@@ -25,7 +25,5 @@ class SocialConfiguration {
             return@SignInAdapter null
         }
     }
-
-
 
 }

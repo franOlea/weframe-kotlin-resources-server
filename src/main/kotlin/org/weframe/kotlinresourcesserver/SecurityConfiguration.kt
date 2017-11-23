@@ -14,7 +14,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-class SecurityConfiguration: WebSecurityConfigurerAdapter() {
+open class SecurityConfiguration: WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
@@ -32,7 +32,7 @@ class SecurityConfiguration: WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
+    open fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf("localhost", "*", "**")
         configuration.allowedMethods = listOf("GET", "POST", "*", "**")
