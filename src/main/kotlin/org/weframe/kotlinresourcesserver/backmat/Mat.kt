@@ -4,11 +4,11 @@ import org.weframe.kotlinresourcesserver.mattype.MatType
 import javax.persistence.*
 
 /**
- * Represents a back mat of a personalized picture frame.
+ * Represents a mat of a personalized picture frame.
  */
 @Entity
 @Table(name = "BACK_MATS")
-class BackMat {
+class Mat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ class BackMat {
 
 
     override fun toString(): String {
-        return "BackMat(id=$id, matType=$matType, outerHorizontalBezel=$horizontalBezel, outerVerticalBezel=$verticalBezel)"
+        return "Mat(id=$id, matType=$matType, outerHorizontalBezel=$horizontalBezel, outerVerticalBezel=$verticalBezel)"
     }
 
 
