@@ -12,7 +12,7 @@ public class UserController {
 
   @RequestMapping("/me")
   public ResponseEntity getMe(final Principal principal) {
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(principal.getName());
   }
 
 }

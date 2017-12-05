@@ -2,14 +2,17 @@ package org.weframe.kotlinresourcesserver.picture
 
 import javax.persistence.*
 
+/**
+ * Represents a picture file reference with a unique key identifier.
+ */
 @Entity
 @Table(name = "PICTURES")
-class Picture {
+open class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    var id: Long = 0
+    var id: Long? = null
 
     @Column(name = "NAME", nullable = false)
     var name: String? = null
@@ -17,7 +20,11 @@ class Picture {
     @Column(name = "KEY", nullable = false, unique = true)
     var key: String? = null
 
-    @Suppress("ConvertSecondaryConstructorToPrimary", "unused")
+    /**
+     * DO NOT USE, needed for JPA only.
+     */
+    constructor()
+
     constructor(name: String, key: String) {
         this.name = name
         this.key = key

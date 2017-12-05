@@ -1,15 +1,15 @@
-package org.weframe.kotlinresourcesserver.backboard
+package org.weframe.kotlinresourcesserver.mattype
 
 import org.weframe.kotlinresourcesserver.Product
 import org.weframe.kotlinresourcesserver.picture.Picture
 import javax.persistence.*
 
 /**
- * Represents a backboard product.
+ * Represents the matting types of the products.
  */
 @Entity
-@Table(name = "BACK_BOARDS")
-class Backboard : Product {
+@Table(name = "MAT_TYPES")
+open class MatType : Product {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
@@ -32,7 +32,7 @@ class Backboard : Product {
     }
 
     override fun toString(): String {
-        return "Backboard(id=$id, name=$name, picture=$picture, m2Price=$m2Price)"
+        return "MatType(id=$id, name=$name, picture=$picture, m2Price=$m2Price)"
     }
 
 }
