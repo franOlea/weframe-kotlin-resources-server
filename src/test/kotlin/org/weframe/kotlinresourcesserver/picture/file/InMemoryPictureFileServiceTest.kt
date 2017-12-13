@@ -3,7 +3,6 @@ package org.weframe.kotlinresourcesserver.picture.file
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
-import org.mockito.Mockito.contains
 import org.mockito.Mockito.mock
 import java.awt.image.BufferedImage
 import org.junit.Before as before
