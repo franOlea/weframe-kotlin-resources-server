@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.weframe.kotlinresourcesserver.picture.file.InMemoryPictureFileService
+import org.weframe.kotlinresourcesserver.picture.file.MultipartFileReader
 import org.weframe.kotlinresourcesserver.picture.file.PictureFileService
 
 @Configuration
@@ -18,6 +19,11 @@ class PictureFileServiceConfiguration {
     @Bean
     fun getPictureFileService() : PictureFileService {
         return InMemoryPictureFileService(serverAddress!!, serverPort!!)
+    }
+
+    @Bean
+    fun getMultipartFileReader() : MultipartFileReader {
+        return MultipartFileReader()
     }
 
 }

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 open class MultipartFileReader {
-    fun read(multipartFile: MultipartFile): BufferedImage {
+    open fun read(multipartFile: MultipartFile): BufferedImage {
         return ImageIO.read(multipartFile.inputStream)
     }
 }

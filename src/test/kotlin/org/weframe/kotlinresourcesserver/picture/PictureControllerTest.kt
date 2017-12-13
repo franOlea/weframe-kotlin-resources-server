@@ -2,6 +2,7 @@ package org.weframe.kotlinresourcesserver.picture
 
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.http.HttpStatus
 import org.springframework.web.multipart.MultipartFile
@@ -40,7 +41,7 @@ class PictureControllerTest {
         val controller = PictureController(fileService!!, repository!!, fileReader!!)
         `when`(fileReader!!.read(multipartFile!!)).thenReturn(image)
         val response = controller.create(multipartFile!!, pictureName, formatName)
-        verify(fileService, times(1))!!.savePicture(image!!, anyString(), formatName)
+        verify(fileService, times(1))!!.savePicture(any(), anyString(), anyString())
         verify(repository, times(1))!!.save(any(Picture::class.java))
         assertThat(response.statusCode, `is`(HttpStatus.OK))
     }
@@ -70,5 +71,12 @@ class PictureControllerTest {
         assertThat(response.body as String, `is`("some-url"))
 
     }
+
+    private fun <T> any(): T {
+        Mockito.any<T>()
+        return uninitialized()
+    }
+
+    private fun <T> uninitialized(): T = null as T
 
 }
