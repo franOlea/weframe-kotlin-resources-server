@@ -1,13 +1,10 @@
 package org.weframe.kotlinresourcesserver.picture
 
-import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.data.repository.query.Param
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import org.springframework.data.jpa.repository.JpaRepository
 
-@Suppress("unused")
-@RepositoryRestResource(collectionResourceRel = "pictures", path = "pictures")
-interface PictureRepository : PagingAndSortingRepository<Picture, Long> {
+interface PictureRepository : JpaRepository<Picture, Long> {
 
-    fun findByKey(@Param("key") key: String): Picture
+    fun findByKey(key: String) : Picture
+    fun deleteByKey(key: String)
 
 }

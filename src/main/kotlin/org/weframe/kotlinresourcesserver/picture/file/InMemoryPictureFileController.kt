@@ -9,14 +9,12 @@ import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("/pictures/in-memory")
-class PictureFileController (service: PictureFileService) {
+@RequestMapping("/pictures")
+class InMemoryPictureFileController(val fileService: PictureFileService) {
 
-    val service: PictureFileService = service;
-
-    @RequestMapping(value = "/{pictureId}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/in-memory/{pictureId}", method = arrayOf(RequestMethod.GET))
     private fun getPictureImage(@PathVariable("pictureId") pictureId: String, response: HttpServletResponse) {
-        val image = service.loadPictureByKey(pictureId)
+        val image = fileService.loadPictureByKey(pictureId)
         if (image != null) {
             val jpegOutputStream = ByteArrayOutputStream()
             ImageIO.write(image.first, image.second, jpegOutputStream)

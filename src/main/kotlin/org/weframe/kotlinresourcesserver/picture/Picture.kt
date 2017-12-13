@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.picture
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import javax.persistence.*
 
 /**
@@ -19,6 +20,10 @@ open class Picture {
 
     @Column(name = "KEY", nullable = false, unique = true)
     var key: String? = null
+
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var url: String? = null
 
     /**
      * DO NOT USE, needed for JPA only.

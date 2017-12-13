@@ -2,7 +2,7 @@ package org.weframe.kotlinresourcesserver.picture.file
 
 import java.awt.image.BufferedImage
 
-class PictureFileInMemoryService(serverIp: String, serverPort: String) : PictureFileService {
+class InMemoryPictureFileService(serverIp: String, serverPort: String) : PictureFileService {
 
     private val serverAddress: String = "$serverIp:$serverPort"
     private val picturesMap: MutableMap<String, Pair<BufferedImage, String>> = HashMap()
@@ -11,9 +11,9 @@ class PictureFileInMemoryService(serverIp: String, serverPort: String) : Picture
         return picturesMap[key]
     }
 
-    override fun generatePictureUrl(key: String): String? {
+    override fun generatePictureUrl(key: String, thumbnail: Boolean): String? {
         return if(picturesMap.containsKey(key)) {
-            "$serverAddress/pictures/in-memory/$key"
+            "$serverAddress/pictures/in-memory/$key${if(thumbnail) "-thumbnail" else ""}"
         } else {
             "$serverAddress/pictures/error"
         }
