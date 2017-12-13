@@ -1,22 +1,21 @@
-package org.weframe.kotlinresourcesserver.picture.file
+package org.weframe.kotlinresourcesserver.picture
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import org.weframe.kotlinresourcesserver.picture.Picture
-import org.weframe.kotlinresourcesserver.picture.PictureRepository
+import org.weframe.kotlinresourcesserver.picture.file.MultipartFileReader
+import org.weframe.kotlinresourcesserver.picture.file.PictureFileService
 import java.util.*
-import javax.imageio.ImageIO
 
 @RestController
 @RequestMapping("/pictures")
-class PictureController(val fileService: PictureFileService, val repository: PictureRepository) {
+class PictureController(val fileService: PictureFileService, val repository: PictureRepository, val fileReader: MultipartFileReader) {
 
     @RequestMapping(value = "", method = arrayOf(RequestMethod.POST))
     fun create(@RequestParam(value = "file") multipartFile: MultipartFile,
                @RequestParam(value = "name") name: String,
                @RequestParam(value = "formatName") imageFormatName: String): ResponseEntity<*> {
-        val image = ImageIO.read(multipartFile.inputStream)
+        val image = fileReader.read(multipartFile)
         val key = UUID.randomUUID().toString()
         fileService.savePicture(image, key, imageFormatName)
         repository.save(Picture(name, key))

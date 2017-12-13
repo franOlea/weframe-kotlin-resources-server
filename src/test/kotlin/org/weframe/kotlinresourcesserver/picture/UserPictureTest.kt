@@ -32,7 +32,6 @@ class UserPictureTest {
         assertThat(userPicture.id, `is`(id))
         assertThat(userPicture.picture, `is`(picture))
         assertThat(userPicture.user, `is`(user))
-        assertThat(userPicture.toString(), equalTo(UserPicture(picture!!, user).toString()))
     }
 
 }
