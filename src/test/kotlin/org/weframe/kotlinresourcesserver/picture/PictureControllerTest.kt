@@ -77,6 +77,7 @@ class PictureControllerTest {
         return uninitialized()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> uninitialized(): T = null as T
 
 }
