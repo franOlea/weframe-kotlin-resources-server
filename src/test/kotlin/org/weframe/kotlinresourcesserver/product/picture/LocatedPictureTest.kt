@@ -5,6 +5,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.mockito.Mockito.mock
 import org.weframe.kotlinresourcesserver.product.FramedPicture
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import org.junit.Test as test
 import org.junit.Before as before
 

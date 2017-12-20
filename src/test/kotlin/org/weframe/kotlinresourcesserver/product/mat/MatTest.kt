@@ -20,7 +20,7 @@ class MatTest {
     }
 
     @test fun create() {
-        val mat: Mat = Mat(matType, horizontalBezel, verticalBezel)
+        val mat = Mat(matType, horizontalBezel, verticalBezel)
 
         assertThat(mat.matType, `is`(matType))
         assertThat(mat.horizontalBezel, `is`(horizontalBezel))
@@ -30,13 +30,16 @@ class MatTest {
 
     @test fun setters() {
         val mat: Mat = Mat()
+        mat.id = 1L
         mat.matType = matType
         mat.horizontalBezel = horizontalBezel
         mat.verticalBezel = verticalBezel
 
+        assertThat(mat.id, `is`(1L))
         assertThat(mat.matType, `is`(matType))
         assertThat(mat.horizontalBezel, `is`(horizontalBezel))
         assertThat(mat.verticalBezel, `is`(verticalBezel))
+        mat.id = null
         assertThat(mat.toString(), equalTo(Mat(matType, horizontalBezel, verticalBezel).toString()))
     }
 }

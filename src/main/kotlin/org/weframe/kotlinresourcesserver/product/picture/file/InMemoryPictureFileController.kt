@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse
 class InMemoryPictureFileController(val fileService: PictureFileService) {
 
     @RequestMapping(value = "/in-memory/{pictureId}", method = arrayOf(RequestMethod.GET))
-    private fun getPictureImage(@PathVariable("pictureId") pictureId: String, response: HttpServletResponse) {
+    fun getPictureImage(@PathVariable("pictureId") pictureId: String, response: HttpServletResponse) {
         val image = fileService.loadPictureByKey(pictureId)
         if (image != null) {
             val jpegOutputStream = ByteArrayOutputStream()

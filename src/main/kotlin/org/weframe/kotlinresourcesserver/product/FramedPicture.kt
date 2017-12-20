@@ -27,7 +27,7 @@ open class FramedPicture {
     var backMat: Mat? = null
 
     @OneToMany(fetch = FetchType.EAGER, cascade =  arrayOf(CascadeType.ALL), mappedBy = "framedPicture")
-    var locatedPictures: Set<LocatedPicture>? = null
+    var locatedPictures: MutableSet<LocatedPicture>? = null
 
     @OneToOne(fetch = FetchType.EAGER, cascade =  arrayOf(CascadeType.ALL), orphanRemoval = true)
     @JoinColumn(name = "WINDOW_MAT", nullable = false)
@@ -41,12 +41,15 @@ open class FramedPicture {
     @JoinColumn(name = "FRAME", nullable = false)
     var frame: Frame? = null
 
+    @Column(name = "USER", nullable = false)
+    var user: String? = null
+
     /**
      * DO NOT USE, needed for JPA only.
      */
     constructor()
 
-    constructor(backBoard: Backboard, backMat: Mat, locatedPictures: Set<LocatedPicture>, windowMat: Mat, frameGlass: FrameGlass, frame: Frame) {
+    constructor(backBoard: Backboard, backMat: Mat, locatedPictures: MutableSet<LocatedPicture>, windowMat: Mat, frameGlass: FrameGlass, frame: Frame) {
         this.backBoard = backBoard
         this.backMat = backMat
         this.locatedPictures = locatedPictures

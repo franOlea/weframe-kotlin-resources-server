@@ -6,6 +6,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before as before
 import org.junit.Test as test
 import org.mockito.Mockito
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 
 class UserPictureTest {
 

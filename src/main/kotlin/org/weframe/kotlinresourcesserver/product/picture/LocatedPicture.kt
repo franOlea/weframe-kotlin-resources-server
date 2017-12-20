@@ -1,6 +1,7 @@
 package org.weframe.kotlinresourcesserver.product.picture
 
 import org.weframe.kotlinresourcesserver.product.FramedPicture
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import javax.persistence.*
 
 

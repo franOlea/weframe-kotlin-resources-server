@@ -16,7 +16,7 @@ class FramedPictureTest {
 
     var backBoard: Backboard? = null
     var backMat: Mat? = null
-    var locatedPictures: Set<LocatedPicture>? = null
+    var locatedPictures: MutableSet<LocatedPicture>? = null
     var windowMat: Mat? = null
     var frameGlass: FrameGlass? = null
     var frame: Frame? = null
@@ -25,7 +25,7 @@ class FramedPictureTest {
     @before fun setUp() {
         backBoard = mock(Backboard::class.java)
         backMat = mock(Mat::class.java)
-        locatedPictures = mock(Set::class.java) as Set<LocatedPicture>
+        locatedPictures = mock(MutableSet::class.java) as MutableSet<LocatedPicture>
         windowMat = mock(Mat::class.java)
         frameGlass = mock(FrameGlass::class.java)
         frame = mock(Frame::class.java)
@@ -34,7 +34,9 @@ class FramedPictureTest {
     @test fun create() {
         val framedPicture = FramedPicture(backBoard!!, backMat!!, locatedPictures!!, windowMat!!, frameGlass!!, frame!!)
         framedPicture.id = 1L
+        framedPicture.user = "user"
         assertThat(framedPicture.id, `is`(1L))
+        assertThat(framedPicture.user, `is`("user"))
         assertThat(framedPicture.backBoard, `is`(backBoard))
         assertThat(framedPicture.backMat, `is`(backMat))
         assertThat(framedPicture.locatedPictures, `is`(locatedPictures))

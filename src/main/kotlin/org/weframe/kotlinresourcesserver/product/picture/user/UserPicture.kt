@@ -1,5 +1,6 @@
-package org.weframe.kotlinresourcesserver.product.picture
+package org.weframe.kotlinresourcesserver.product.picture.user
 
+import org.weframe.kotlinresourcesserver.product.picture.Picture
 import javax.persistence.*
 
 @Entity
