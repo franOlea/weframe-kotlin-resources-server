@@ -25,13 +25,10 @@ class FramedPictureController(val repository: FramedPictureRepository) {
 
     @RequestMapping(value = "", method = arrayOf(RequestMethod.GET))
     fun getAll(@RequestParam(value = "page") page: Int, @RequestParam("size") size: Int, principal: Principal)
-            : ResponseEntity<List<FramedPicture>> {
-        return ResponseEntity.ok(repository.findByUser(principal.name, PageRequest(page, size)))
-    }
+            : ResponseEntity<List<FramedPicture>> =
+            ResponseEntity.ok(repository.findByUser(principal.name, PageRequest(page, size)))
 
     @RequestMapping(value = "/count", method = arrayOf(RequestMethod.GET))
-    fun count(principal: Principal): ResponseEntity<Long> {
-        return ResponseEntity.ok(repository.countByUser(principal.name))
-    }
+    fun count(principal: Principal): ResponseEntity<Long> = ResponseEntity.ok(repository.countByUser(principal.name))
 
 }

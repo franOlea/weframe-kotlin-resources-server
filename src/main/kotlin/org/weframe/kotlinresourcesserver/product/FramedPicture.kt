@@ -7,7 +7,6 @@ import org.weframe.kotlinresourcesserver.product.mat.Mat
 import org.weframe.kotlinresourcesserver.product.picture.LocatedPicture
 import javax.persistence.*
 
-
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "PICTURE_FRAMES")
