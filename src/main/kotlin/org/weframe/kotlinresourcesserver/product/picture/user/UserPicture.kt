@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.product.picture.user
 
+import org.springframework.data.annotation.CreatedBy
 import org.weframe.kotlinresourcesserver.product.picture.Picture
 import javax.persistence.*
 
@@ -16,6 +17,7 @@ open class UserPicture {
     @JoinColumn(name = "PICTURE", nullable = false)
     var picture: Picture? = null
 
+    @CreatedBy
     @Column(name = "USER", nullable = false)
     var user: String? = null
 

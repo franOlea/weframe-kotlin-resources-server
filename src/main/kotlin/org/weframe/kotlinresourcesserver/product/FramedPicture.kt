@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.product
 
+import org.springframework.data.annotation.CreatedBy
 import org.weframe.kotlinresourcesserver.product.backboard.Backboard
 import org.weframe.kotlinresourcesserver.product.frame.Frame
 import org.weframe.kotlinresourcesserver.product.frameglass.FrameGlass
@@ -41,6 +42,7 @@ open class FramedPicture {
     @JoinColumn(name = "FRAME", nullable = false)
     var frame: Frame? = null
 
+    @CreatedBy
     @Column(name = "USER", nullable = false)
     var user: String? = null
 
