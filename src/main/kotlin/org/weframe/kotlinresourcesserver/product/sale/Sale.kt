@@ -31,4 +31,19 @@ open class Sale {
             inverseJoinColumns= arrayOf(JoinColumn(name="FRAMED_PICTURE_ID", referencedColumnName="ID")))
     var framedPictures: MutableList<FramedPicture>? = null
 
+    /**
+     * DO NOT USE, needed for JPA only.
+     */
+    constructor()
+
+    constructor(user: String, date: Date, framedPictures: MutableList<FramedPicture>) {
+        this.user = user
+        this.date = date
+        this.framedPictures = framedPictures
+    }
+
+    override fun toString(): String {
+        return "Sale(id=$id, user=$user, date=$date, framedPictures=$framedPictures)"
+    }
+
 }
