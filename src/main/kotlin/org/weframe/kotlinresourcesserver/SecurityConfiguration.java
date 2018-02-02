@@ -15,8 +15,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.weframe.kotlinresourcesserver.product.picture.file.InMemoryPictureFileService;
 import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService;
 
-@EnableWebSecurity
 @EnableJpaAuditing
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String BACKBOARDS_URL = "/backboards/**";
@@ -61,7 +61,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     return new SpringSecurityAuditorAware();
   }
 
-  PictureFileService pictureFileService() {
-    return new InMemoryPictureFileService("127.0.0.1","8080");
-  }
 }
