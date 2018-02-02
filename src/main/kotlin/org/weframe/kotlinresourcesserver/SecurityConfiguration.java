@@ -3,7 +3,6 @@ package org.weframe.kotlinresourcesserver;
 import com.auth0.spring.security.api.JwtWebSecurityConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,12 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.weframe.kotlinresourcesserver.picture.file.PictureFileInMemoryService;
+import org.weframe.kotlinresourcesserver.picture.file.PictureFileService;
 
-import java.util.Arrays;
-import java.util.Collections;
-
+//@Configuration
 @EnableWebSecurity
-@Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String BACKBOARDS_URL = "/backboards/**";
@@ -54,5 +52,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
+  }
+
+  @Bean
+  PictureFileService pictureFileService() {
+    return new PictureFileInMemoryService("127.0.0.1","8080");
   }
 }
