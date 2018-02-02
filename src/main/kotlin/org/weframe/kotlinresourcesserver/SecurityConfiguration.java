@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.weframe.kotlinresourcesserver.product.picture.file.InMemoryPictureFileService;
-import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService;
 
 @EnableJpaAuditing
 @EnableWebSecurity
@@ -45,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  CorsConfigurationSource getCorsConfigurationSource() {
+  CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowCredentials(true);
     configuration.addAllowedOrigin("*");
@@ -57,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  AuditorAware<String> getAuditorAware() {
+  AuditorAware<String> auditorAware() {
     return new SpringSecurityAuditorAware();
   }
 
