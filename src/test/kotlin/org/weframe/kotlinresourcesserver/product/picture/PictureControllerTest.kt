@@ -16,6 +16,7 @@ class PictureControllerTest {
 
     val pictureName = "picture"
     val formatName = "format"
+    val key = "key"
 
     var fileService: PictureFileService? = null
     var repository: PictureRepository? = null
@@ -40,7 +41,7 @@ class PictureControllerTest {
     @test fun uploadPicture() {
         val controller = PictureController(fileService!!, repository!!, fileReader!!)
         `when`(fileReader!!.read(multipartFile!!)).thenReturn(image)
-        val response = controller.create(multipartFile!!, pictureName, formatName)
+        val response = controller.create(multipartFile!!, pictureName, key, formatName)
         verify(fileService, times(1))!!.savePicture(any(), anyString(), anyString())
         verify(repository, times(1))!!.save(any(Picture::class.java))
         assertThat(response.statusCode, `is`(HttpStatus.OK))
