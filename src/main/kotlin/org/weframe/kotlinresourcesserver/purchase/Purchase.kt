@@ -51,4 +51,8 @@ open class Item {
     @JoinColumn(name = "purchase", nullable = false)
     var purchase: Purchase? = null
 
+    override fun toString(): String {
+        return "Item(id=$id, name=$name, quantity=$quantity, unitPrice=$unitPrice)"
+    }
+
 }
