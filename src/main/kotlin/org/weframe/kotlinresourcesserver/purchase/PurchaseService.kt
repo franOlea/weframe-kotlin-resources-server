@@ -11,14 +11,14 @@ import java.security.Principal
 @RequestMapping("/purchases")
 class PurchaseController(private val repo: PurchaseRepository) {
 
-    @RequestMapping(value = "", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = [""], method = [RequestMethod.POST])
     fun create(@RequestBody purchase: Purchase, principal: Principal): ResponseEntity<String> {
         purchase.user = principal.name
         repo.save(purchase)
         return ResponseEntity.ok("")
     }
 
-    @RequestMapping(value = "", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = [""], method = arrayOf(RequestMethod.GET))
     fun getAll(
             @RequestParam(value = "page") page: Int,
             @RequestParam("size") size: Int,
@@ -26,7 +26,7 @@ class PurchaseController(private val repo: PurchaseRepository) {
         return ResponseEntity.ok(repo.findByUser(principal.name, PageRequest(page, size)))
     }
 
-    @RequestMapping(value = "/count", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/count"], method = arrayOf(RequestMethod.GET))
     fun count(principal: Principal): ResponseEntity<Long> {
         return ResponseEntity.ok(repo.countByUser(principal.name))
     }
