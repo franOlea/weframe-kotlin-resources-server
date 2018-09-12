@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.weframe.kotlinresourcesserver.purchase.Purchase
 import org.weframe.kotlinresourcesserver.purchase.PurchaseRepository
+import java.math.BigDecimal
 import java.security.Principal
 
 @RestController
@@ -22,7 +24,7 @@ class MercadoPagoService(private val repo: PurchaseRepository) {
                 principal: Principal) : ResponseEntity<String> {
         val pendingPurchase = repo.findOne(purchaseId)
         val payment = Payment()
-        payment.transactionAmount = 1f
+        payment.transactionAmount = getTransactionAmount(pendingPurchase)
         payment.setToken(token)
         payment.description = "Marco"
         payment.installments = installments
@@ -31,6 +33,13 @@ class MercadoPagoService(private val repo: PurchaseRepository) {
         payment.payer.email = principal.name
         payment.save()
         return ResponseEntity.ok(payment.status.toString())
+    }
+
+    private fun getTransactionAmount(purchase: Purchase) : Float {
+        return purchase.items!!.stream()
+                .map{ item -> BigDecimal(item.quantity!!) * item.unitPrice!!}
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .toFloat()
     }
 
 }
