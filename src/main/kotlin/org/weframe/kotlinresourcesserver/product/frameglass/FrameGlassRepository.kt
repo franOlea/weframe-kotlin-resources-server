@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @Suppress("unused")
 @RepositoryRestResource(collectionResourceRel = "frame-glasses", path = "frame-glasses")
-interface BackboardRepository : PagingAndSortingRepository<FrameGlass, Long> {
+interface FrameGlassRepository : PagingAndSortingRepository<FrameGlass, Long> {
 
     fun findByNameLike(@Param("name") name: String): FrameGlass
 
