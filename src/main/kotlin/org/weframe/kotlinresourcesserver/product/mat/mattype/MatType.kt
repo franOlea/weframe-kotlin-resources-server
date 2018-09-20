@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.product.mat.mattype
 
+import org.springframework.data.rest.core.annotation.RestResource
 import org.weframe.kotlinresourcesserver.product.Product
 import org.weframe.kotlinresourcesserver.product.picture.Picture
 import javax.persistence.*
@@ -13,8 +14,9 @@ open class MatType : Product {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = arrayOf(CascadeType.ALL))
+            cascade = [CascadeType.ALL])
     @JoinColumn(name = "PICTURE", nullable = false)
+    @RestResource(exported=false)
     var picture: Picture? = null
 
     @Column(name= "M2_PRICE", nullable = false)

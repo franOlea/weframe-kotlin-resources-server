@@ -34,13 +34,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .configure(http)
         .cors().and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/users/me").authenticated()
-        .antMatchers(HttpMethod.GET, BACKBOARDS_URL).hasAuthority("read:backboards")
-        .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasAuthority("create:backboards")
-        .antMatchers(HttpMethod.DELETE, BACKBOARDS_URL).hasAuthority("delete:backboards")
-        .antMatchers(HttpMethod.GET, PICTURES_URL).hasAuthority("read:pictures")
-        .antMatchers(HttpMethod.POST, PICTURES_URL).hasAuthority("create:pictures")
-        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasAuthority("delete:pictures")
+//        .antMatchers(HttpMethod.GET, "/users/me").authenticated()
+//        .antMatchers(HttpMethod.GET, BACKBOARDS_URL).hasAuthority("read:backboards")
+//        .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasAuthority("create:backboards")
+//        .antMatchers(HttpMethod.DELETE, BACKBOARDS_URL).hasAuthority("delete:backboards")
+//        .antMatchers(HttpMethod.GET, PICTURES_URL).hasAuthority("read:pictures")
+//        .antMatchers(HttpMethod.POST, PICTURES_URL).hasAuthority("create:pictures")
+//        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasAuthority("delete:pictures")
         .anyRequest().permitAll();
   }
 
