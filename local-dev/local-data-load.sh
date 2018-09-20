@@ -180,40 +180,39 @@ ${BASE_URL}/mat-types \
       "m2Price": 2.99
     }'
 
-# white mat type picture
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/pictures \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-#-H 'postman-token: acef7d44-8d3b-3787-bdfc-4205b524d0a2' \
-#-F file=@/personal/kotlin-resources-server/dummy-data/dev-images/ivory-off-white-paper-texture.jpg \
-#-F uniqueName=white-mat-type \
-#-F formatName=jpg
-#
-## white mat type
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/mat-types \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "White Mat Type",
-#      "uniqueName": "white-mat-type",
-#      "description": "This is a test white mat type for developing purposes. Lorem Ipsum bla bla bla...",
-#      "picture": {
-#        "imageKey": "white-mat-type"
-#      },
-#      "m2Price": 19.99
-#    }'
-#
+#white mat type picture
+
+
+IMAGE_KEY=$(curl \
+--silent \
+-X POST \
+${BASE_URL}/pictures \
+-H 'cache-control: no-cache' \
+-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+-F file=@${FILE_PATH}/dev-images/ivory-off-white-paper-texture.jpg \
+-F name=white-mat-type \
+-F formatName=jpg)
+
+# white mat type
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/mat-types \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
+-d '{
+      "name": "White Mat Type",
+      "uniqueName": "white-mat-type",
+      "description": "This is a test white mat type for developing purposes. Lorem Ipsum bla bla bla...",
+      "picture": {
+        "key": "'${IMAGE_KEY}'"
+      },
+      "m2Price": 19.99
+    }'
+
 #######################################################################################################################################################
 ##   BACKBOARD
 #######################################################################################################################################################
