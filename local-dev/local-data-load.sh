@@ -205,7 +205,6 @@ ${BASE_URL}/mat-types \
 -H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
 -d '{
       "name": "White Mat Type",
-      "uniqueName": "white-mat-type",
       "description": "This is a test white mat type for developing purposes. Lorem Ipsum bla bla bla...",
       "picture": {
         "key": "'${IMAGE_KEY}'"
@@ -216,75 +215,69 @@ ${BASE_URL}/mat-types \
 #######################################################################################################################################################
 ##   BACKBOARD
 #######################################################################################################################################################
-#
-## green backboard picture
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/pictures \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-#-H 'postman-token: acef7d44-8d3b-3787-bdfc-4205b524d0a2' \
-#-F file=@/personal/kotlin-resources-server/dummy-data/dev-images/green-backboard.jpg \
-#-F uniqueName=green-backboard \
-#-F formatName=jpg
-#
-## green backboard
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/backboards \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "Green Backboard",
-#      "uniqueName": "green-backboard",
-#      "description": "This is a test green backboard for developing purposes. Lorem Ipsum bla bla bla...",
-#      "picture": {
-#        "imageKey": "green-backboard"
-#      },
-#      "m2Price": 21.33
-#    }'
-#
-## gray backboard picture
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/pictures \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-#-H 'postman-token: acef7d44-8d3b-3787-bdfc-4205b524d0a2' \
-#-F file=@/personal/kotlin-resources-server/dummy-data/dev-images/gray-backboard.jpg \
-#-F uniqueName=gray-backboard \
-#-F formatName=jpg
-#
-## gray backboard
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/backboards \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "Gray Backboard",
-#      "uniqueName": "gray-backboard",
-#      "description": "This is a test gray backboard for developing purposes. Lorem Ipsum bla bla bla...",
-#      "picture": {
-#        "imageKey": "gray-backboard"
-#      },
-#      "m2Price": 19
-#    }'
-#
+
+# green backboard picture
+IMAGE_KEY=$(curl \
+--silent \
+-X POST \
+${BASE_URL}/pictures \
+-H 'cache-control: no-cache' \
+-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+-F file=@${FILE_PATH}/dev-images/green-backboard.jpg \
+-F name=green-backboard \
+-F formatName=jpg)
+
+# green backboard
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/backboards \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
+-d '{
+      "name": "Green Backboard",
+      "description": "This is a test green backboard for developing purposes. Lorem Ipsum bla bla bla...",
+      "picture": {
+        "key": "'${IMAGE_KEY}'"
+      },
+      "m2Price": 21.33
+    }'
+
+# gray backboard picture
+
+IMAGE_KEY=$(curl \
+--silent \
+-X POST \
+${BASE_URL}/pictures \
+-H 'cache-control: no-cache' \
+-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+-F file=@${FILE_PATH}/dev-images/gray-backboard.jpg \
+-F name=gray-backboard \
+-F formatName=jpg)
+
+# gray backboard
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/backboards \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
+-d '{
+      "name": "Gray Backboard",
+      "uniqueName": "gray-backboard",
+      "description": "This is a test gray backboard for developing purposes. Lorem Ipsum bla bla bla...",
+      "picture": {
+        "key": "'${IMAGE_KEY}'"
+      },
+      "m2Price": 19
+    }'
+
 #######################################################################################################################################################
 ##   FRAME-GLASS
 #######################################################################################################################################################
