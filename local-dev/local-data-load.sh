@@ -202,7 +202,6 @@ curl \
 ${BASE_URL}/mat-types \
 -H 'cache-control: no-cache' \
 -H 'content-type: application/json' \
--H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
 -d '{
       "name": "White Mat Type",
       "description": "This is a test white mat type for developing purposes. Lorem Ipsum bla bla bla...",
@@ -236,7 +235,6 @@ curl \
 ${BASE_URL}/backboards \
 -H 'cache-control: no-cache' \
 -H 'content-type: application/json' \
--H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
 -d '{
       "name": "Green Backboard",
       "description": "This is a test green backboard for developing purposes. Lorem Ipsum bla bla bla...",
@@ -267,10 +265,8 @@ curl \
 ${BASE_URL}/backboards \
 -H 'cache-control: no-cache' \
 -H 'content-type: application/json' \
--H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
 -d '{
       "name": "Gray Backboard",
-      "uniqueName": "gray-backboard",
       "description": "This is a test gray backboard for developing purposes. Lorem Ipsum bla bla bla...",
       "picture": {
         "key": "'${IMAGE_KEY}'"
@@ -278,57 +274,51 @@ ${BASE_URL}/backboards \
       "m2Price": 19
     }'
 
-#######################################################################################################################################################
-##   FRAME-GLASS
-#######################################################################################################################################################
-#
-## glass frame glass
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/frame-glasses \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "Glass",
-#      "uniqueName": "glass-frame-glass",
-#      "description": "This is a test glass frame glass for developing purposes. Lorem Ipsum bla bla bla...",
-#      "m2Price": 76.99
-#    }'
-#
-## acrilic frame glass
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/frame-glasses \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "Acrilic",
-#      "uniqueName": "acrilic-frame-glass",
-#      "description": "This is a test acrilic frame glass for developing purposes. Lorem Ipsum bla bla bla...",
-#      "m2Price": 56.99
-#    }'
-#
-## plastic frame glass
-#
-#curl \
-#--silent \
-#-w "%{http_code}\n" \
-#-X POST \
-#http://localhost:8080/generic-product/frame-glasses \
-#-H 'cache-control: no-cache' \
-#-H 'content-type: application/json' \
-#-H 'postman-token: 0a6aeb5e-3e75-e032-c235-de497cb4feb4' \
-#-d '{
-#      "name": "Plastic",
-#      "uniqueName": "plastic-frame-glass",
-#      "description": "This is a test plastic frame glass for developing purposes. Lorem Ipsum bla bla bla...",
-#      "m2Price": 36.99
-#    }'
+######################################################################################################################################################
+#   FRAME-GLASS
+######################################################################################################################################################
+
+# glass frame glass
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/frame-glasses \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-d '{
+      "name": "Glass",
+      "description": "This is a test glass frame glass for developing purposes. Lorem Ipsum bla bla bla...",
+      "m2Price": 76.99
+    }'
+
+# acrilic frame glass
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/frame-glasses \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-d '{
+      "name": "Acrilic",
+      "description": "This is a test acrilic frame glass for developing purposes. Lorem Ipsum bla bla bla...",
+      "m2Price": 56.99
+    }'
+
+# plastic frame glass
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/frame-glasses \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-d '{
+      "name": "Plastic",
+      "description": "This is a test plastic frame glass for developing purposes. Lorem Ipsum bla bla bla...",
+      "m2Price": 36.99
+    }'
