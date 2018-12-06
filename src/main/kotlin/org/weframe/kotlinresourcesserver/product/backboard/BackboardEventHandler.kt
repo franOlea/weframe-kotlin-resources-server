@@ -48,7 +48,7 @@ class BackboardController(private val repository: BackboardRepository,
         return ResponseEntity.ok(resources)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], value = ["/frames/{id}"])
+    @RequestMapping(method = [RequestMethod.GET], value = ["/backboards/{id}"])
     @ResponseBody
     fun getBackboard(@PathVariable("id") id: Long): ResponseEntity<Resource<Backboard>> {
         val backboard = repository.findOne(id)

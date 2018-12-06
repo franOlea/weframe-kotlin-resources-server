@@ -14,12 +14,12 @@ class PictureController(val fileService: PictureFileService, val repository: Pic
     @RequestMapping(value = [""], method = [RequestMethod.POST])
     fun create(@RequestParam(value = "file") multipartFile: MultipartFile,
                @RequestParam(value = "name") name: String,
-               @RequestParam(value = "formatName") imageFormatName: String): ResponseEntity<*> {
+               @RequestParam(value = "formatName") imageFormatName: String): ResponseEntity<Picture> {
         val image = fileReader.read(multipartFile)
         val key = UUID.randomUUID().toString()
         fileService.savePicture(image, key, imageFormatName)
-        repository.save(Picture(name, key))
-        return ResponseEntity.ok(key)
+        val savedPicture = repository.save(Picture(name, key))
+        return ResponseEntity.ok(savedPicture)
     }
 
     @RequestMapping(value = ["/{key}"], method = [RequestMethod.DELETE])

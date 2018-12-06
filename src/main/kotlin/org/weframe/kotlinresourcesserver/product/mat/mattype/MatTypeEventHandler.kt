@@ -49,7 +49,7 @@ class MatTypeController(private val repository: MatTypeRepository,
         return ResponseEntity.ok(resources)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], value = ["/frames/{id}"])
+    @RequestMapping(method = [RequestMethod.GET], value = ["/mat-types/{id}"])
     @ResponseBody
     fun getMatType(@PathVariable("id") id: Long): ResponseEntity<Resource<MatType>> {
         val matType = repository.findOne(id)

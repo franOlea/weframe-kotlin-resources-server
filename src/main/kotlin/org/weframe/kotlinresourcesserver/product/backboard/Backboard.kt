@@ -14,7 +14,7 @@ open class Backboard : Product {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = arrayOf(CascadeType.ALL))
+            cascade = [CascadeType.ALL])
     @JoinColumn(name = "PICTURE", nullable = false)
     @RestResource(exported=false)
     var picture: Picture? = null

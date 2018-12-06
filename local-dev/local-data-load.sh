@@ -18,7 +18,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/Frame.png \
 -F name=black-frame \
--F formatName=png)
+-F formatName=png | jq -r '.key')
 
 #black frame
 
@@ -53,7 +53,7 @@ ${BASE_URL}/pictures \
 -H 'postman-token: acef7d44-8d3b-3787-bdfc-4205b524d0a2' \
 -F file=@${FILE_PATH}/dev-images/4f4ce3e5e98243ba90d3c4025c03e699.png \
 -F name=pink-frame \
--F formatName=png)
+-F formatName=png | jq -r '.key')
 
 # pink frame
 
@@ -88,7 +88,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/c03b2cb5cc1e04bbe8dc1763e1ea49d6.png \
 -F name=old-classic-frame \
--F formatName=png)
+-F formatName=png | jq -r '.key')
 
 # old classic frame
 
@@ -124,7 +124,7 @@ ${BASE_URL}/pictures \
 -F file=@${FILE_PATH}/dev-images/PNGPIX-COM-Photo-Frame-PNG-Transparent-Image-2-500x365.png \
 -F name=standard-frame \
 -F key=standard-frame \
--F formatName=png)
+-F formatName=png | jq -r '.key')
 
 # standard frame
 
@@ -160,7 +160,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/BackMat.png \
 -F name=brown-mat-type \
--F formatName=png)
+-F formatName=png | jq -r '.key')
 
 # brown mat type
 
@@ -191,7 +191,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/ivory-off-white-paper-texture.jpg \
 -F name=white-mat-type \
--F formatName=jpg)
+-F formatName=jpg | jq -r '.key')
 
 # white mat type
 
@@ -224,7 +224,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/green-backboard.jpg \
 -F name=green-backboard \
--F formatName=jpg)
+-F formatName=jpg | jq -r '.key')
 
 # green backboard
 
@@ -254,7 +254,7 @@ ${BASE_URL}/pictures \
 -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
 -F file=@${FILE_PATH}/dev-images/gray-backboard.jpg \
 -F name=gray-backboard \
--F formatName=jpg)
+-F formatName=jpg | jq -r '.key')
 
 # gray backboard
 

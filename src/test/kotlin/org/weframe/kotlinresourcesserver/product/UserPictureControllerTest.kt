@@ -4,10 +4,13 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.mockito.Mockito
 import org.mockito.Mockito.*
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.mockito.Mockito.`when` as whenever
 import org.weframe.kotlinresourcesserver.product.picture.Picture
+import org.weframe.kotlinresourcesserver.product.picture.PictureRepository
+import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureController
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureRepository
@@ -21,45 +24,41 @@ class UserPictureControllerTest {
     var picture: Picture? = null
     val principalName = "name"
     var principal: Principal? = null
-    var repository: UserPictureRepository? = null
+    var userPictureRepository: UserPictureRepository? = null
+    var pictureRepository: PictureRepository? = null
+    var service: PictureFileService? = null
 
     @before fun setUp() {
         userPicture = mock(UserPicture::class.java)
-        repository = mock(UserPictureRepository::class.java)
+        userPictureRepository = mock(UserPictureRepository::class.java)
         principal = mock(Principal::class.java)
         picture = mock(Picture::class.java)
+        service = mock(PictureFileService::class.java)
+        pictureRepository = mock(PictureRepository::class.java)
     }
 
     @test fun create() {
-        UserPictureController(repository!!)
+        UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
     }
 
     @test fun createUserPicture() {
         whenever(principal!!.name).thenReturn(principalName)
-        val controller = UserPictureController(repository!!)
+        val controller = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
         controller.create(picture!!, principal!!)
-        verify(repository, times(1))!!
+        verify(userPictureRepository, times(1))!!
                 .save(any(UserPicture::class.java))
     }
 
     @test fun getAll() {
-        whenever(repository!!.findByUser(principalName, PageRequest(1,1)))
-                .thenReturn(listOf(userPicture!!))
+        val userPictures = listOf(userPicture!!)
+        PageImpl(userPictures, PageRequest(0, 1), 1L)
+        whenever(userPictureRepository!!.findByUser(principalName, PageRequest(1,1)))
+                .thenReturn(PageImpl(userPictures, PageRequest(0, 1), 1L))
         whenever(principal!!
                 .name).thenReturn(principalName)
-        val response = UserPictureController(repository!!).getAll(1,1, principal!!)
+        val response = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!).getAll(1,1, principal!!)
         assertThat(response.statusCode, `is`(HttpStatus.OK))
-        assertThat(response.body[0], `is`(userPicture))
-    }
-
-    @test fun count() {
-        whenever(repository!!.countByUser(principalName))
-                .thenReturn(1L)
-        whenever(principal!!
-                .name).thenReturn(principalName)
-        val response = UserPictureController(repository!!).count(principal!!)
-        assertThat(response.statusCode, `is`(HttpStatus.OK))
-        assertThat(response.body, `is`(1L))
+        assertThat(response.body.content.contains(userPicture), `is`(true))
     }
 
     private fun <T> any(): T {
