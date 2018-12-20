@@ -38,9 +38,4 @@ class UserPictureController(private val userPictureRepository: UserPictureReposi
         return ResponseEntity.ok(resources)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], value = ["/{id}"])
-    fun count(principal: Principal): ResponseEntity<Long> {
-        return ResponseEntity.ok(userPictureRepository.countByUser(principal.name))
-    }
-
 }
