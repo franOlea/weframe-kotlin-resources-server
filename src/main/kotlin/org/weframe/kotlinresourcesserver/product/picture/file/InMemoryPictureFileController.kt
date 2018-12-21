@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 @RequestMapping("/pictures")
 class InMemoryPictureFileController(val fileService: PictureFileService) {
 
-    @RequestMapping(value = "/in-memory/{pictureId}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/in-memory/{pictureId}"], method = [RequestMethod.GET])
     fun getPictureImage(@PathVariable("pictureId") pictureId: String, response: HttpServletResponse) {
         val image = fileService.loadPictureByKey(pictureId)
         if (image != null) {
@@ -29,7 +29,7 @@ class InMemoryPictureFileController(val fileService: PictureFileService) {
         response.setHeader("Cache-Control", "no-store")
         response.setHeader("Pragma", "no-cache")
         response.setDateHeader("Expires", 0)
-        response.contentType = "image/" + formatName
+        response.contentType = "image/$formatName"
         val responseOutputStream = response.outputStream
         responseOutputStream.write(imgByte)
         responseOutputStream.flush()

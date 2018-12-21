@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.product.frame
 
+import org.springframework.data.rest.core.annotation.RestResource
 import org.weframe.kotlinresourcesserver.product.Product
 import org.weframe.kotlinresourcesserver.product.picture.Picture
 import javax.persistence.*
@@ -9,7 +10,7 @@ import javax.persistence.*
  * Represents the frame of the products.
  */
 @Entity
-@Table(name = "MAT_TYPES")
+@Table(name = "FRAMES")
 open class Frame : Product {
 
     @Column(name= "HEIGHT", nullable = false)
@@ -21,10 +22,11 @@ open class Frame : Product {
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = arrayOf(CascadeType.ALL))
-    @JoinColumn(name = "PICTURE", nullable = false)
+    @JoinColumn(name = "PICTURE")
+    @RestResource(exported=false)
     var picture: Picture? = null
 
-    @Column(name= "M2_PRICE", nullable = false)
+    @Column(name= "M2_PRICE")
     var price: Float? = null
 
     constructor()

@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 
 class InMemoryPictureFileService(serverIp: String, serverPort: String) : PictureFileService {
 
-    private val serverAddress: String = "$serverIp:$serverPort"
+    private val serverAddress: String = "http://$serverIp:$serverPort"
     private val picturesMap: MutableMap<String, Pair<BufferedImage, String>> = HashMap()
 
     override fun loadPictureByKey(key: String): Pair<BufferedImage, String>? {
@@ -20,7 +20,8 @@ class InMemoryPictureFileService(serverIp: String, serverPort: String) : Picture
     }
 
     override fun savePicture(bufferedImage: BufferedImage, key: String, formatName: String) {
-        picturesMap.put(key, Pair(bufferedImage, formatName))
+        picturesMap[key] = Pair(bufferedImage, formatName)
+        picturesMap["$key-thumbnail"] = Pair(bufferedImage, formatName)
     }
 
     override fun deletePicture(key: String) {
