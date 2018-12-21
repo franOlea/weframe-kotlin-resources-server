@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+AUTHORIZATION=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik56STVNRVE1TmpSRk4wVXhORVV3UXpWQk5rTTNRa0kxT0VJek1VVTNRVEJGUlRBek1VRTRRUSJ9.eyJodHRwczovL2VtYWlsIjoiZnJhbi5henRrQGdtYWlsLmNvbSIsImh0dHBzOi8vbmFtZSI6IkZyYW5jaXNjbyBPbGVhIiwiaXNzIjoiaHR0cHM6Ly93ZWZyYW1lLmF1dGgwLmNvbS8iLCJzdWIiOiJmYWNlYm9va3wxOTQ0NzAwNTk1NzUzMjUzIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaWF0IjoxNTQ1MjU4NjE0LCJleHAiOjE1NDUzNDQ5NjEsImF6cCI6IlQ0b2RKVUJ4TUFpa0c1UDZzRWFxN3drNU9xZGFiVllMIiwic2NvcGUiOiJBRE1JTiJ9.qOYEipRqkZiavm5T1ab9qVzgVPjLvhY-R83xyRTQIXs7DCiUnLTVW1D6DwVX39Q3nQkJV7o_jAtymWhYNFq5jn0LPEMNcfPJdMMCQ6CzPgwMiIaKoe_6dsMzQng_qWR0vpt8qHRnZIOU7QQuCQzuMOcHcwEyvOHqVnFUSTqruVnsg8YQpC_YdLFSCUtr5zvz_TY1ibAva6m2bAxCDoZdf1FxhJRDJKcFyGUGJ8G9Nfvkm_mnvcbgDqnZM5Cywhe2RRRYSbBpOufNPQRCrsO2l3XU9_rTwqinTW4FkTzGaXPGfY_13U5HUOlY60xySe-A6IgDieMvjpqM7ojZGcOqxA
 FILE_PATH=/Users/folea/personal/kotlin-resources-server/local-dev
 BASE_URL=http://localhost:8080
 
@@ -321,4 +321,60 @@ ${BASE_URL}/frame-glasses \
       "name": "Plastic",
       "description": "This is a test plastic frame glass for developing purposes. Lorem Ipsum bla bla bla...",
       "m2Price": 36.99
+    }'
+
+######################################################################################################################################################
+#   USER-PICTURES
+######################################################################################################################################################
+
+#esta es mi villa picture
+
+IMAGE_KEY=$(curl \
+--silent \
+-X POST \
+${BASE_URL}/pictures \
+-H 'cache-control: no-cache' \
+-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+-H 'Authorization: Bearer '${AUTHORIZATION} \
+-F file=@${FILE_PATH}/dev-images/25092013_125156_16189224.jpg \
+-F name=25092013_125156_16189224 \
+-F formatName=jpg | jq -r '.key')
+
+#esta es mi villa
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/user-pictures \
+-H 'content-type: application/json' \
+-H 'Authorization: Bearer '${AUTHORIZATION} \
+-d '{
+      "key": "'${IMAGE_KEY}'"
+    }'
+
+#civic picture
+
+IMAGE_KEY=$(curl \
+--silent \
+-X POST \
+${BASE_URL}/pictures \
+-H 'cache-control: no-cache' \
+-H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+-H 'Authorization: Bearer '${AUTHORIZATION} \
+-F file=@${FILE_PATH}/dev-images/29694748_1620171924763275_3730102846907301391_n.jpg \
+-F name=29694748_1620171924763275_3730102846907301391_n \
+-F formatName=jpg | jq -r '.key')
+
+#civic
+
+curl \
+--silent \
+-s -o /dev/null -w '%{http_code}\n' \
+-X POST \
+${BASE_URL}/user-pictures \
+-H 'content-type: application/json' \
+-H 'Authorization: Bearer '${AUTHORIZATION} \
+-d '{
+      "key": "'${IMAGE_KEY}'"
     }'

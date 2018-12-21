@@ -2,7 +2,10 @@
 
 package org.weframe.kotlinresourcesserver.purchase
 
-import java.math.BigDecimal
+import org.weframe.kotlinresourcesserver.product.backboard.Backboard
+import org.weframe.kotlinresourcesserver.product.frame.Frame
+import org.weframe.kotlinresourcesserver.product.mat.mattype.MatType
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import javax.persistence.*
 
 @Entity
@@ -17,42 +20,42 @@ open class Purchase {
     @Column(name = "USER", nullable = false)
     var user: String? = null
 
-    @OneToMany(fetch = FetchType.EAGER, cascade =  arrayOf(CascadeType.ALL), mappedBy = "purchase")
-    var items: MutableSet<Item>? = null
+    @ManyToOne
+    @JoinColumn(name = "USER_PICTURE", nullable = false)
+    var userPicture: UserPicture? = null
+
+    @ManyToOne
+    @JoinColumn(name = "FRAME", nullable = false)
+    var frame: Frame? = null
+
+    @Column(name = "FRAME_PRICE", nullable = false)
+    var framePrice: Long? = null
+
+    @ManyToOne
+    @JoinColumn(name = "BACKBOARD", nullable = false)
+    var backboard: Backboard? = null
+
+    @Column(name = "BACKBOARD_PRICE", nullable = false)
+    var backboardPrice: Long? = null
+
+    @ManyToOne
+    @JoinColumn(name = "FRONT_MAT", nullable = false)
+    var frontMat: MatType? = null
+
+    @Column(name = "FRONT_MAT_PRICE", nullable = false)
+    var frontMatPrice: Long? = null
 
     @Column(name = "STAMP_DATETIME", nullable = false)
     var stampDatetime: Long? = null
 
-    override fun toString(): String {
-        return "Purchase(id=$id, user=$user, items=$items, stampDatetime=$stampDatetime)"
-    }
-
-}
-
-@Entity
-@Table(name = "PURCHASE_ITEMS")
-open class Item {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
-    var id: Long? = null
-
-    @Column(name = "NAME", nullable = false)
-    var name: String? = null
-
-    @Column(name = "QUANTITY", nullable = false)
-    var quantity: Int? = null
-
-    @Column(name = "UNIT_PRICE", precision = 8, scale = 2)
-    var unitPrice: BigDecimal? = null
-
-    @OneToOne(fetch = FetchType.EAGER, cascade =  arrayOf(CascadeType.ALL), orphanRemoval = true)
-    @JoinColumn(name = "purchase", nullable = false)
-    var purchase: Purchase? = null
+    @Column(name = "STATUS", nullable = false)
+    var status: String? = null
 
     override fun toString(): String {
-        return "Item(id=$id, name=$name, quantity=$quantity, unitPrice=$unitPrice)"
+        return "Purchase(id=$id, user=$user, userPicture=$userPicture, frame=$frame, framePrice=$framePrice, " +
+                "backboard=$backboard, backboardPrice=$backboardPrice, frontMat=$frontMat, " +
+                "frontMatPrice=$frontMatPrice, stampDatetime=$stampDatetime)"
     }
+
 
 }
