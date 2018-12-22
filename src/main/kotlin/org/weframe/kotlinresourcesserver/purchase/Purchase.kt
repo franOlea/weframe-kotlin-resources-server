@@ -20,36 +20,39 @@ open class Purchase {
     @Column(name = "USER", nullable = false)
     var user: String? = null
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "USER_PICTURE", nullable = false)
     var userPicture: UserPicture? = null
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRAME", nullable = false)
     var frame: Frame? = null
 
     @Column(name = "FRAME_PRICE", nullable = false)
-    var framePrice: Long? = null
+    var framePrice: Float? = null
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "BACKBOARD", nullable = false)
     var backboard: Backboard? = null
 
     @Column(name = "BACKBOARD_PRICE", nullable = false)
-    var backboardPrice: Long? = null
+    var backboardPrice: Float? = null
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRONT_MAT", nullable = false)
     var frontMat: MatType? = null
 
     @Column(name = "FRONT_MAT_PRICE", nullable = false)
-    var frontMatPrice: Long? = null
+    var frontMatPrice: Float? = null
 
     @Column(name = "STAMP_DATETIME", nullable = false)
     var stampDatetime: Long? = null
 
     @Column(name = "STATUS", nullable = false)
     var status: String? = null
+
+    @Column(name = "TRANSACTION_ID", nullable = false)
+    var transactionId: String? = null
 
     override fun toString(): String {
         return "Purchase(id=$id, user=$user, userPicture=$userPicture, frame=$frame, framePrice=$framePrice, " +

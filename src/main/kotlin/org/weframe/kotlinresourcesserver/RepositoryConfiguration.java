@@ -9,6 +9,7 @@ import org.weframe.kotlinresourcesserver.product.frameglass.FrameGlass;
 import org.weframe.kotlinresourcesserver.product.mat.Mat;
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatType;
 import org.weframe.kotlinresourcesserver.product.picture.Picture;
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture;
 
 @Configuration
 public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
@@ -20,5 +21,6 @@ public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
     config.exposeIdsFor(MatType.class);
     config.exposeIdsFor(Mat.class);
     config.exposeIdsFor(FrameGlass.class);
+    config.exposeIdsFor(UserPicture.class);
   }
 }
