@@ -54,6 +54,9 @@ open class Purchase {
     @Column(name = "TRANSACTION_ID", nullable = false)
     var transactionId: String? = null
 
+    @Column(name = "TRANSACTION_INITIAL_POINT", nullable = false)
+    var transactionInitialPoint: String? = null
+
     override fun toString(): String {
         return "Purchase(id=$id, user=$user, userPicture=$userPicture, frame=$frame, framePrice=$framePrice, " +
                 "backboard=$backboard, backboardPrice=$backboardPrice, frontMat=$frontMat, " +

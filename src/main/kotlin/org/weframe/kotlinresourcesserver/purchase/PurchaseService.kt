@@ -22,6 +22,8 @@ import com.mercadopago.resources.datastructures.preference.Payer
 import java.util.*
 import java.text.DecimalFormat
 import javax.websocket.server.PathParam
+import com.mercadopago.resources.datastructures.preference.BackUrls
+import javax.servlet.http.HttpServletResponse
 
 
 @RestController
@@ -33,7 +35,7 @@ class PurchaseController(private val repo: PurchaseRepository,
                          private val matTypeRepository: MatTypeRepository) {
 
     @RequestMapping(value = [""], method = [RequestMethod.POST])
-    fun create(@RequestBody purchase: Purchase, principal: Principal): String {
+    fun create(@RequestBody purchase: Purchase, principal: Principal, response: HttpServletResponse) : ResponseEntity<Purchase> {
         purchase.backboard = backboardRepository.findOne(purchase.backboard!!.id)
         purchase.userPicture = userPictureRepository.findOne(purchase.userPicture!!.id)
         purchase.frame = frameRepository.findOne(purchase.frame!!.id)
@@ -54,11 +56,16 @@ class PurchaseController(private val repo: PurchaseRepository,
         payer.email = email
         preference.payer = payer
         preference.appendItem(item)
-        preference.save()
         purchase.transactionId = UUID.randomUUID().toString()
         preference.externalReference = purchase.transactionId
-        repo.save(purchase)
-        return "redirect:" + preference.sandboxInitPoint
+        val backUrls = BackUrls(
+                "localhost:9000/purchase/purchase-success",
+                "localhost:9000/purchase/purchase-pending",
+                "localhost:9000/purchase/purchase-failure")
+        preference.backUrls = backUrls
+        val savedPreference = preference.save()
+        purchase.transactionInitialPoint = savedPreference.initPoint
+        return ResponseEntity.ok(repo.save(purchase))
     }
 
     fun roundTwoDecimals(d: Float): Float {

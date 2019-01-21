@@ -3,7 +3,6 @@ package org.weframe.kotlinresourcesserver.mercadopago;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -20,11 +19,6 @@ public class MercadoPagoConfiguration {
   public void init() throws MPException {
     MercadoPago.SDK.setClientSecret(clientSecret);
     MercadoPago.SDK.setClientId(clientID);
-  }
-
-  @Bean
-  public MercadoPagoCredentials mercadoPagoCredentials() {
-    return new MercadoPagoCredentials(clientID, clientSecret);
   }
 
 }
