@@ -2,6 +2,7 @@ package org.weframe.kotlinresourcesserver.purchase
 
 import com.auth0.jwt.JWT
 import com.auth0.spring.security.api.authentication.AuthenticationJsonWebToken
+import com.mercadopago.resources.Payment
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -23,6 +24,7 @@ import java.util.*
 import java.text.DecimalFormat
 import javax.websocket.server.PathParam
 import com.mercadopago.resources.datastructures.preference.BackUrls
+import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import javax.servlet.http.HttpServletResponse
 
 
@@ -32,7 +34,8 @@ class PurchaseController(private val repo: PurchaseRepository,
                          private val frameRepository: FrameRepository,
                          private val backboardRepository: BackboardRepository,
                          private val userPictureRepository: UserPictureRepository,
-                         private val matTypeRepository: MatTypeRepository) {
+                         private val matTypeRepository: MatTypeRepository,
+                         private val pictureService: PictureFileService) {
 
     @RequestMapping(value = [""], method = [RequestMethod.POST])
     fun create(@RequestBody purchase: Purchase, principal: Principal, response: HttpServletResponse) : ResponseEntity<Purchase> {
@@ -41,7 +44,8 @@ class PurchaseController(private val repo: PurchaseRepository,
         purchase.frame = frameRepository.findOne(purchase.frame!!.id)
         purchase.frontMat = matTypeRepository.findOne(purchase.frontMat!!.id)
         purchase.user = principal.name
-        purchase.status = "OPEN"
+        purchase.transactionStatus = Payment.Status.pending.name
+        purchase.status = PurchaseStatus.PENDING
         purchase.stampDatetime = Instant.now().toEpochMilli()
 
         val email = JWT.decode((principal as AuthenticationJsonWebToken).token).getClaim("https://email").asString()
@@ -79,18 +83,24 @@ class PurchaseController(private val repo: PurchaseRepository,
             @RequestParam("size") size: Int,
             principal: Principal) : ResponseEntity<Resources<Purchase>> {
         val pagedResponse = repo.findByUser(principal.name, PageRequest(page, size))
-        val userPicturesPage = PagedResources.PageMetadata(
+        pagedResponse.content.forEach { purchase ->
+            purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
+            purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)
+            purchase.frontMat!!.picture!!.url = pictureService.generatePictureUrl(purchase.frontMat!!.picture!!.key!!, true)
+            purchase.userPicture!!.picture!!.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
+        }
+        val purchasesPage = PagedResources.PageMetadata(
                 pagedResponse.size.toLong(),
                 pagedResponse.number.toLong(),
                 pagedResponse.totalElements,
                 pagedResponse.totalPages.toLong())
-        val resources = PagedResources(pagedResponse.content, userPicturesPage)
+        val resources = PagedResources(pagedResponse.content, purchasesPage)
         return ResponseEntity.ok(resources)
     }
 
     @RequestMapping(value = ["/admin"], method = [RequestMethod.GET])
     fun getAllByStatus(
-            @RequestParam(value = "status", defaultValue = "OPEN") status: String,
+            @RequestParam(value = "transactionStatus", defaultValue = "PENDING") status: PurchaseStatus,
             @RequestParam(value = "page") page: Int,
             @RequestParam("size") size: Int) : ResponseEntity<Resources<Purchase>> {
         val pagedResponse = repo.findByStatus(status, PageRequest(page, size))
@@ -106,7 +116,7 @@ class PurchaseController(private val repo: PurchaseRepository,
     @RequestMapping(value = ["/admin/fulfil/{id}"], method = [RequestMethod.PATCH])
     fun fulfillPurchase(@PathParam(value = "id") id: Long) : ResponseEntity<Purchase>{
         val purchase = repo.findOne(id)
-        purchase.status = "FULFILLED"
+        purchase.transactionStatus = "FULFILLED"
         return ResponseEntity.ok(repo.save(purchase))
     }
 
@@ -114,5 +124,5 @@ class PurchaseController(private val repo: PurchaseRepository,
 
 interface PurchaseRepository : PagingAndSortingRepository<Purchase, Long> {
     fun findByUser(user: String, pageable: Pageable): Page<Purchase>
-    fun findByStatus(status: String, pageable: Pageable): Page<Purchase>
+    fun findByStatus(status: PurchaseStatus, pageable: Pageable): Page<Purchase>
 }

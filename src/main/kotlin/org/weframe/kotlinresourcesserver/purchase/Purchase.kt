@@ -2,6 +2,7 @@
 
 package org.weframe.kotlinresourcesserver.purchase
 
+import org.springframework.data.rest.core.annotation.RestResource
 import org.weframe.kotlinresourcesserver.product.backboard.Backboard
 import org.weframe.kotlinresourcesserver.product.frame.Frame
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatType
@@ -22,10 +23,12 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "USER_PICTURE", nullable = false)
+    @RestResource(exported=false)
     var userPicture: UserPicture? = null
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRAME", nullable = false)
+    @RestResource(exported=false)
     var frame: Frame? = null
 
     @Column(name = "FRAME_PRICE", nullable = false)
@@ -33,6 +36,7 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "BACKBOARD", nullable = false)
+    @RestResource(exported=false)
     var backboard: Backboard? = null
 
     @Column(name = "BACKBOARD_PRICE", nullable = false)
@@ -40,6 +44,7 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRONT_MAT", nullable = false)
+    @RestResource(exported=false)
     var frontMat: MatType? = null
 
     @Column(name = "FRONT_MAT_PRICE", nullable = false)
@@ -48,13 +53,17 @@ open class Purchase {
     @Column(name = "STAMP_DATETIME", nullable = false)
     var stampDatetime: Long? = null
 
-    @Column(name = "STATUS", nullable = false)
-    var status: String? = null
+    @Column(name = "TRANSACTION_STATUS", nullable = false)
+    var transactionStatus: String? = null
 
     @Column(name = "TRANSACTION_ID", nullable = false)
     var transactionId: String? = null
 
-    @Column(name = "TRANSACTION_INITIAL_POINT", nullable = false)
+    @Column(name = "PURCHASE_STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    var status: PurchaseStatus? = null
+
+    @Transient
     var transactionInitialPoint: String? = null
 
     override fun toString(): String {
@@ -63,5 +72,14 @@ open class Purchase {
                 "frontMatPrice=$frontMatPrice, stampDatetime=$stampDatetime)"
     }
 
+}
 
+enum class PurchaseStatus {
+    PENDING,
+    MAKING,
+    SHIPPING,
+    COMPLETE,
+    CANCELLED,
+    REJECTED,
+    ERROR
 }

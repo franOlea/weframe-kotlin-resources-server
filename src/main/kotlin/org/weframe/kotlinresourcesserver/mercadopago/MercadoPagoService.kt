@@ -2,36 +2,38 @@ package org.weframe.kotlinresourcesserver.mercadopago
 
 import com.mercadopago.MercadoPago
 import com.mercadopago.resources.Payment
+import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
 import org.springframework.data.domain.PageRequest
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import org.weframe.kotlinresourcesserver.purchase.PurchaseRepository
+import org.weframe.kotlinresourcesserver.purchase.PurchaseStatus
 
-
-//@
-@RestController
+@Component
 class MercadoPagoPurchaseChecker(private val purchaseRepository: PurchaseRepository,
                                  private val mercadoPagoApi: MercadoPagoAPI) {
 
-//    @Scheduled(fixedRate = 10_000)
-    @RequestMapping(path = ["/test"], method = [RequestMethod.GET])
-    fun validatePaymentPendindPurchases() {
-        val openPurchases = purchaseRepository.findByStatus("OPEN", PageRequest(0, 100))
-        openPurchases.forEach { purchase ->
-            val payments = mercadoPagoApi.getPayments(purchase.transactionId!!)
-            payments.results!!.forEach { payment ->
-                purchase.status = payment.status.name
-            }
-            purchaseRepository.save(purchase)
-        }
-    }
+    private val log = LoggerFactory.getLogger(MercadoPagoPurchaseChecker::class.java)
 
-    fun test() {
-        val accessToken = MercadoPago.SDK.getAccessToken()
-        
+    @Scheduled(fixedRate = 10_000)
+    fun validatePaymentPendingPurchases() {
+        val openPurchases = purchaseRepository.findByStatus(PurchaseStatus.PENDING, PageRequest(0, 100))
+        if(openPurchases.content.isNotEmpty()) {
+            log.info("Found {} open purchases, checking for payments...", openPurchases.content.size)
+            openPurchases.forEach { purchase ->
+                val payments = mercadoPagoApi.getPayments(purchase.transactionId!!)
+                if(payments.results!!.isNotEmpty()) {
+                    payments.results!!.forEach { payment ->
+                        purchase.transactionStatus = payment.status.name
+                        purchase.status = PurchaseStatus.MAKING
+                    }
+                    purchaseRepository.save(purchase)
+                    log.info("Payment found saving purchase status.")
+                }
+            }
+        }
     }
 
 }
@@ -41,6 +43,7 @@ interface MercadoPagoAPI {
 }
 
 @Component
+@Profile("external")
 class MercadoPagoREST : MercadoPagoAPI {
 
     val restTemplate = RestTemplate()
@@ -52,6 +55,23 @@ class MercadoPagoREST : MercadoPagoAPI {
                 .append("&external_reference=").append(externalReference)
                 .toString()
         return restTemplate.getForObject(url, PaymentResponse::class.java)
+    }
+
+}
+
+@Component
+@Profile("local")
+class MercadoPagoStub : MercadoPagoAPI {
+
+    override fun getPayments(externalReference: String) : PaymentResponse {
+        val paging = PaymentResponseMetadata()
+        val payment = Payment()
+        payment.status = Payment.Status.approved
+        val results = arrayListOf(payment)
+        val paymentResponse = PaymentResponse()
+        paymentResponse.paging = paging
+        paymentResponse.results = results
+        return paymentResponse
     }
 
 }
