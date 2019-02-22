@@ -23,12 +23,12 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "USER_PICTURE", nullable = false)
-    @RestResource(exported=false)
+    @RestResource(exported = false)
     var userPicture: UserPicture? = null
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRAME", nullable = false)
-    @RestResource(exported=false)
+    @RestResource(exported = false)
     var frame: Frame? = null
 
     @Column(name = "FRAME_PRICE", nullable = false)
@@ -36,7 +36,7 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "BACKBOARD", nullable = false)
-    @RestResource(exported=false)
+    @RestResource(exported = false)
     var backboard: Backboard? = null
 
     @Column(name = "BACKBOARD_PRICE", nullable = false)
@@ -44,7 +44,7 @@ open class Purchase {
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "FRONT_MAT", nullable = false)
-    @RestResource(exported=false)
+    @RestResource(exported = false)
     var frontMat: MatType? = null
 
     @Column(name = "FRONT_MAT_PRICE", nullable = false)
@@ -65,6 +65,21 @@ open class Purchase {
 
     @Transient
     var transactionInitialPoint: String? = null
+
+    @Column(name = "STREET_ADDRESS_ONE", nullable = false)
+    var streetAddressOne: String? = null
+
+    @Column(name = "STREET_ADDRESS_TWO", nullable = false)
+    var streetAddressTwo: String? = null
+
+    @Column(name = "ZIP_CODE", nullable = false)
+    var zipCode: String? = null
+
+    @Column(name = "PROVINCE", nullable = false)
+    var province: String? = null
+
+    @Column(name = "LOCALITY", nullable = false)
+    var locality: String? = null
 
     override fun toString(): String {
         return "Purchase(id=$id, user=$user, userPicture=$userPicture, frame=$frame, framePrice=$framePrice, " +
