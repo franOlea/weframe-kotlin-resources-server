@@ -39,16 +39,17 @@ class PurchaseController(private val repo: PurchaseRepository,
 
     @RequestMapping(value = [""], method = [RequestMethod.POST])
     fun create(@RequestBody purchase: Purchase, principal: Principal, response: HttpServletResponse) : ResponseEntity<Purchase> {
+        val email = JWT.decode((principal as AuthenticationJsonWebToken).token).getClaim("https://email").asString()
+
         purchase.backboard = backboardRepository.findOne(purchase.backboard!!.id)
         purchase.userPicture = userPictureRepository.findOne(purchase.userPicture!!.id)
         purchase.frame = frameRepository.findOne(purchase.frame!!.id)
         purchase.frontMat = matTypeRepository.findOne(purchase.frontMat!!.id)
-        purchase.user = principal.name
+        purchase.user = email
         purchase.transactionStatus = Payment.Status.pending.name
         purchase.status = PurchaseStatus.PENDING
         purchase.stampDatetime = Instant.now().toEpochMilli()
 
-        val email = JWT.decode((principal as AuthenticationJsonWebToken).token).getClaim("https://email").asString()
         val preference = Preference()
         val item = Item()
         item.id = UUID.randomUUID().toString()
@@ -82,7 +83,8 @@ class PurchaseController(private val repo: PurchaseRepository,
             @RequestParam(value = "page") page: Int,
             @RequestParam("size") size: Int,
             principal: Principal) : ResponseEntity<Resources<Purchase>> {
-        val pagedResponse = repo.findByUser(principal.name, PageRequest(page, size))
+        val email = JWT.decode((principal as AuthenticationJsonWebToken).token).getClaim("https://email").asString()
+        val pagedResponse = repo.findByUser(email, PageRequest(page, size))
         pagedResponse.content.forEach { purchase ->
             purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
             purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)
