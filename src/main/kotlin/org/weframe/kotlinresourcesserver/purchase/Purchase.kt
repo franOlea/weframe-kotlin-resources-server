@@ -2,6 +2,9 @@
 
 package org.weframe.kotlinresourcesserver.purchase
 
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.springframework.data.rest.core.annotation.RestResource
 import org.weframe.kotlinresourcesserver.product.backboard.Backboard
 import org.weframe.kotlinresourcesserver.product.frame.Frame
@@ -11,6 +14,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "PURCHASES")
+@EntityListeners(AuditingEntityListener::class)
 open class Purchase {
 
     @Id
@@ -80,6 +84,11 @@ open class Purchase {
 
     @Column(name = "LOCALITY", nullable = false)
     var locality: String? = null
+
+    @LastModifiedDate
+    @CreatedDate
+    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
+    var lastModifiedDate: Long? = null
 
     override fun toString(): String {
         return "Purchase(id=$id, user=$user, userPicture=$userPicture, frame=$frame, framePrice=$framePrice, " +

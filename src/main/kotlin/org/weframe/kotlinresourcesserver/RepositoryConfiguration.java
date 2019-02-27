@@ -1,6 +1,7 @@
 package org.weframe.kotlinresourcesserver;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.weframe.kotlinresourcesserver.product.backboard.Backboard;
@@ -13,6 +14,7 @@ import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture;
 import org.weframe.kotlinresourcesserver.purchase.Purchase;
 
 @Configuration
+@EnableJpaAuditing
 public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
   @Override
   public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {

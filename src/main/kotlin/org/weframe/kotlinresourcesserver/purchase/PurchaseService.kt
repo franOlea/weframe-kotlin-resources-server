@@ -3,9 +3,14 @@ package org.weframe.kotlinresourcesserver.purchase
 import com.auth0.jwt.JWT
 import com.auth0.spring.security.api.authentication.AuthenticationJsonWebToken
 import com.mercadopago.resources.Payment
+import com.mercadopago.resources.Preference
+import com.mercadopago.resources.datastructures.preference.BackUrls
+import com.mercadopago.resources.datastructures.preference.Item
+import com.mercadopago.resources.datastructures.preference.Payer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.hateoas.PagedResources
 import org.springframework.hateoas.Resources
@@ -14,18 +19,14 @@ import org.springframework.web.bind.annotation.*
 import org.weframe.kotlinresourcesserver.product.backboard.BackboardRepository
 import org.weframe.kotlinresourcesserver.product.frame.FrameRepository
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatTypeRepository
+import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureRepository
 import java.security.Principal
-import java.time.Instant
-import com.mercadopago.resources.Preference
-import com.mercadopago.resources.datastructures.preference.Item
-import com.mercadopago.resources.datastructures.preference.Payer
-import java.util.*
 import java.text.DecimalFormat
-import javax.websocket.server.PathParam
-import com.mercadopago.resources.datastructures.preference.BackUrls
-import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
+import java.time.Instant
+import java.util.*
 import javax.servlet.http.HttpServletResponse
+import javax.websocket.server.PathParam
 
 
 @RestController
@@ -102,10 +103,16 @@ class PurchaseController(private val repo: PurchaseRepository,
 
     @RequestMapping(value = ["/admin"], method = [RequestMethod.GET])
     fun getAllByStatus(
-            @RequestParam(value = "transactionStatus", defaultValue = "PENDING") status: PurchaseStatus,
+            @RequestParam(value = "status", required = false) status: PurchaseStatus?,
             @RequestParam(value = "page") page: Int,
             @RequestParam("size") size: Int) : ResponseEntity<Resources<Purchase>> {
-        val pagedResponse = repo.findByStatus(status, PageRequest(page, size))
+        val pageRequest = PageRequest(page, size, Sort(Sort.Direction.DESC, "lastModifiedDate"))
+        val pagedResponse = if(status != null) {
+            repo.findByStatus(status, pageRequest)
+        } else {
+            repo.findAll(pageRequest)
+        }
+
         val userPicturesPage = PagedResources.PageMetadata(
                 pagedResponse.size.toLong(),
                 pagedResponse.number.toLong(),
