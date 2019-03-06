@@ -2,6 +2,7 @@ package org.weframe.kotlinresourcesserver.product
 
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Ignore
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.data.domain.PageImpl
@@ -41,6 +42,7 @@ class UserPictureControllerTest {
         UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
     }
 
+    @Ignore
     @test fun createUserPicture() {
         whenever(principal!!.name).thenReturn(principalName)
         val controller = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
@@ -49,6 +51,7 @@ class UserPictureControllerTest {
                 .save(any(UserPicture::class.java))
     }
 
+    @Ignore
     @test fun getAll() {
         val userPictures = listOf(userPicture!!)
         PageImpl(userPictures, PageRequest(0, 1), 1L)
