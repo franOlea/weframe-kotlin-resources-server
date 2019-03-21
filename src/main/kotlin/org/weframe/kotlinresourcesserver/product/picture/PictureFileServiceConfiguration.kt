@@ -10,15 +10,19 @@ import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 @Configuration
 class PictureFileServiceConfiguration {
 
-    @Value("\${server.address}")
+    @Value("\${service.address}")
     private val serverAddress: String? = null
 
-    @Value("\${server.port}")
+    @Value("\${service.port}")
     private val serverPort: String? = null
 
     @Bean
     fun getPictureFileService() : PictureFileService {
-        return InMemoryPictureFileService(serverAddress!!, serverPort!!)
+        return if(serverPort != null) {
+            InMemoryPictureFileService("$serverAddress:$serverPort")
+        } else {
+            InMemoryPictureFileService(serverAddress!!)
+        }
     }
 
     @Bean

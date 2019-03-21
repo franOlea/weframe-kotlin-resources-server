@@ -2,9 +2,9 @@ package org.weframe.kotlinresourcesserver.product.picture.file
 
 import java.awt.image.BufferedImage
 
-class InMemoryPictureFileService(serverIp: String, serverPort: String) : PictureFileService {
+class InMemoryPictureFileService(serverUrl: String) : PictureFileService {
 
-    private val serverAddress: String = "http://$serverIp:$serverPort"
+    private val serverAddress: String = "http://$serverUrl"
     private val picturesMap: MutableMap<String, Pair<BufferedImage, String>> = HashMap()
 
     override fun loadPictureByKey(key: String): Pair<BufferedImage, String>? {

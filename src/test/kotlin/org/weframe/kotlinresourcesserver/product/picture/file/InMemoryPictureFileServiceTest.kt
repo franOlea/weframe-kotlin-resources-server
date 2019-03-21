@@ -22,11 +22,11 @@ class InMemoryPictureFileServiceTest {
     }
 
     @test fun create() {
-        InMemoryPictureFileService(ip, port)
+        InMemoryPictureFileService(ip)
     }
 
     @test fun saveLoadAndDeletePicture() {
-        val service = InMemoryPictureFileService(ip, port)
+        val service = InMemoryPictureFileService(ip)
         service.savePicture(image!!, key, format)
         val storedImage = service.loadPictureByKey(key)
         assertThat(storedImage!!.first, `is`(image))
@@ -36,7 +36,7 @@ class InMemoryPictureFileServiceTest {
     }
 
     @test fun generateUrl() {
-        val service = InMemoryPictureFileService(ip, port)
+        val service = InMemoryPictureFileService(ip)
         service.savePicture(image!!, key, format)
         assertThat(service.generatePictureUrl(key, false)!!.contains(key), `is`(true))
         assertThat(service.generatePictureUrl(key, false)!!.contains("-thumbnail"), `is`(false))

@@ -43,7 +43,7 @@ interface MercadoPagoAPI {
 }
 
 @Component
-@Profile("external")
+@Profile("aws")
 class MercadoPagoREST : MercadoPagoAPI {
 
     val restTemplate = RestTemplate()
