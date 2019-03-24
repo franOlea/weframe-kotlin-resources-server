@@ -7,8 +7,8 @@ class InMemoryPictureFileService(serverUrl: String) : PictureFileService {
     private val serverAddress: String = "http://$serverUrl"
     private val picturesMap: MutableMap<String, Pair<BufferedImage, String>> = HashMap()
 
-    override fun loadPictureByKey(key: String): Pair<BufferedImage, String>? {
-        return picturesMap[key]
+    override fun loadPictureByKey(key: String): BufferedImage? {
+        return picturesMap[key]!!.first
     }
 
     override fun generatePictureUrl(key: String, thumbnail: Boolean): String? {

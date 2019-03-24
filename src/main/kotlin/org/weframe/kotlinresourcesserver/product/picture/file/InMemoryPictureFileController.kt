@@ -17,9 +17,9 @@ class InMemoryPictureFileController(val fileService: PictureFileService) {
         val image = fileService.loadPictureByKey(pictureId)
         if (image != null) {
             val jpegOutputStream = ByteArrayOutputStream()
-            ImageIO.write(image.first, image.second, jpegOutputStream)
+            ImageIO.write(image, "jpg", jpegOutputStream)
             val imgByte = jpegOutputStream.toByteArray()
-            preparePictureResponse(response, imgByte, image.second)
+            preparePictureResponse(response, imgByte, "jpg")
         } else {
             prepareEmptyResponse(response)
         }

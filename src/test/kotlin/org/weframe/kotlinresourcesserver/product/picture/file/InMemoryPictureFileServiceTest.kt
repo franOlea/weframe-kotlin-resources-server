@@ -29,8 +29,7 @@ class InMemoryPictureFileServiceTest {
         val service = InMemoryPictureFileService(ip)
         service.savePicture(image!!, key, format)
         val storedImage = service.loadPictureByKey(key)
-        assertThat(storedImage!!.first, `is`(image))
-        assertThat(storedImage.second, `is`(format))
+        assertThat(storedImage, `is`(image))
         service.deletePicture(key)
         assertThat(service.loadPictureByKey(key), nullValue())
     }

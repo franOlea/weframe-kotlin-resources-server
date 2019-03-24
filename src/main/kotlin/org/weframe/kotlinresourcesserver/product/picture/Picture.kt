@@ -15,10 +15,10 @@ open class Picture {
     @Column(name = "ID")
     var id: Long? = null
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "PICTURE_NAME", nullable = false)
     var name: String? = null
 
-    @Column(name = "KEY", nullable = false, unique = true)
+    @Column(name = "PICTURE_KEY", nullable = false, unique = true)
     var key: String? = null
 
     @Transient

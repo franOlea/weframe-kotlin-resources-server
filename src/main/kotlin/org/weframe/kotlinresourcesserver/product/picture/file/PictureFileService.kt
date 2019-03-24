@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 
 interface PictureFileService {
 
-    fun loadPictureByKey(key: String): Pair<BufferedImage, String>?
+    fun loadPictureByKey(key: String): BufferedImage?
 
     fun generatePictureUrl(key: String, thumbnail: Boolean): String?
 
