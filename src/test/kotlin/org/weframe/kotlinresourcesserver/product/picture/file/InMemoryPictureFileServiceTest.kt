@@ -7,6 +7,7 @@ import org.mockito.Mockito.mock
 import java.awt.image.BufferedImage
 import org.junit.Before as before
 import org.junit.Test as test
+import org.junit.Ignore as ignore
 
 class InMemoryPictureFileServiceTest {
 
@@ -25,7 +26,7 @@ class InMemoryPictureFileServiceTest {
         InMemoryPictureFileService(ip)
     }
 
-    @test fun saveLoadAndDeletePicture() {
+    @ignore @test fun saveLoadAndDeletePicture() {
         val service = InMemoryPictureFileService(ip)
         service.savePicture(image!!, key, format)
         val storedImage = service.loadPictureByKey(key)
