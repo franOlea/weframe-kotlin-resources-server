@@ -1,6 +1,7 @@
 package org.weframe.kotlinresourcesserver;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.spring.security.api.authentication.AuthenticationJsonWebToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,11 @@ public class UserController {
 
   @RequestMapping("/me")
   public ResponseEntity getMe(final Principal principal) {
-    String email = JWT.decode(((AuthenticationJsonWebToken) principal).getToken())
-        .getClaim("https://email")
-        .asString();
-    return ResponseEntity.ok(email);
+    DecodedJWT decodedJWT = JWT.decode(((AuthenticationJsonWebToken) principal).getToken());
+    String email = decodedJWT.getClaim("https://email").asString();
+    String role = decodedJWT.getClaim("scope").asString();
+    return ResponseEntity.ok(email + "|" + role);
+
   }
 
 }

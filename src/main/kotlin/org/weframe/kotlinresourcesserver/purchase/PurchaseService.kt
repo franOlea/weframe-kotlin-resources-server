@@ -7,6 +7,7 @@ import com.mercadopago.resources.Preference
 import com.mercadopago.resources.datastructures.preference.BackUrls
 import com.mercadopago.resources.datastructures.preference.Item
 import com.mercadopago.resources.datastructures.preference.Payer
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -26,7 +27,6 @@ import java.text.DecimalFormat
 import java.time.Instant
 import java.util.*
 import javax.servlet.http.HttpServletResponse
-import javax.websocket.server.PathParam
 
 
 @RestController
@@ -37,6 +37,9 @@ class PurchaseController(private val repo: PurchaseRepository,
                          private val userPictureRepository: UserPictureRepository,
                          private val matTypeRepository: MatTypeRepository,
                          private val pictureService: PictureFileService) {
+
+    @Value(value = "\${mercado-pago.back.url.base}")
+    private val backUrlBase: String? = null
 
     @RequestMapping(value = [""], method = [RequestMethod.POST])
     fun create(@RequestBody purchase: Purchase, principal: Principal, response: HttpServletResponse) : ResponseEntity<Purchase> {
@@ -65,9 +68,9 @@ class PurchaseController(private val repo: PurchaseRepository,
         purchase.transactionId = UUID.randomUUID().toString()
         preference.externalReference = purchase.transactionId
         val backUrls = BackUrls(
-                "localhost:9000/purchase/purchase-success",
-                "localhost:9000/purchase/purchase-pending",
-                "localhost:9000/purchase/purchase-failure")
+                "$backUrlBase/purchase/purchase-success",
+                "$backUrlBase/purchase/purchase-pending",
+                "$backUrlBase/purchase/purchase-failure")
         preference.backUrls = backUrls
         val savedPreference = preference.save()
         purchase.transactionInitialPoint = savedPreference.initPoint
@@ -123,7 +126,7 @@ class PurchaseController(private val repo: PurchaseRepository,
     }
 
     @RequestMapping(value = ["/admin/fulfil/{id}"], method = [RequestMethod.PATCH])
-    fun fulfillPurchase(@PathParam(value = "id") id: Long) : ResponseEntity<Purchase>{
+    fun fulfillPurchase(@PathVariable(value = "id") id: Long) : ResponseEntity<Purchase>{
         val purchase = repo.findOne(id)
         purchase.transactionStatus = "FULFILLED"
         return ResponseEntity.ok(repo.save(purchase))

@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.hateoas.PagedResources
 import org.springframework.hateoas.Resources
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import org.weframe.kotlinresourcesserver.product.picture.Picture
 import org.weframe.kotlinresourcesserver.product.picture.PictureRepository
@@ -36,6 +37,17 @@ class UserPictureController(private val userPictureRepository: UserPictureReposi
                 userPictures.totalPages.toLong())
         val resources = PagedResources(userPictures.content, userPicturesPage)
         return ResponseEntity.ok(resources)
+    }
+
+    @RequestMapping(value = ["/{id}"], method = [RequestMethod.DELETE])
+//    @Transactional
+    fun delete(@PathVariable("id") id: Long) : ResponseEntity<String> {
+        val userPicture = userPictureRepository.findOne(id)
+        val pictureId = userPicture.picture!!.id!!
+        userPicture.picture = null
+        pictureRepository.delete(pictureId)
+        userPictureRepository.delete(userPicture.id)
+        return ResponseEntity.ok().build()
     }
 
 }

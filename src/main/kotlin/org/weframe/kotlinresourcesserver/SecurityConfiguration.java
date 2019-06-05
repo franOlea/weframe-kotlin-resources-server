@@ -12,15 +12,15 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private static final String ADMIN_ROLE = "ADMIN";
   private static final String BACKBOARDS_URL = "/backboards/**";
   private static final String PICTURES_URL = "/pictures/**";
+  private static final String FRAMES_URL = "/frames/**";
+  private static final String MAT_TYPES_URL = "/mat-types/**";
 
   @Value(value = "${auth0.apiAudience}")
   private String apiAudience;
@@ -34,14 +34,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .configure(http)
         .cors().and()
         .authorizeRequests()
-//        .antMatchers(HttpMethod.GET, "/users/me").authenticated()
-//        .antMatchers(HttpMethod.GET, BACKBOARDS_URL).hasAuthority("read:backboards")
-//        .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasAuthority("create:backboards")
-//        .antMatchers(HttpMethod.DELETE, BACKBOARDS_URL).hasAuthority("delete:backboards")
-//        .antMatchers(HttpMethod.GET, PICTURES_URL).hasAuthority("read:pictures")
-//        .antMatchers(HttpMethod.POST, PICTURES_URL).hasAuthority("create:pictures")
-//        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasAuthority("delete:pictures")
-        .anyRequest().permitAll();
+        .antMatchers(HttpMethod.DELETE, FRAMES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.DELETE, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.DELETE, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.POST, FRAMES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.POST, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasRole(ADMIN_ROLE)
+        .anyRequest().authenticated();
   }
 
   @Bean

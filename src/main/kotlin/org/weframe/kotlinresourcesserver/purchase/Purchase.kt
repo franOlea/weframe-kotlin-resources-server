@@ -73,7 +73,7 @@ open class Purchase {
     @Column(name = "STREET_ADDRESS_ONE", nullable = false)
     var streetAddressOne: String? = null
 
-    @Column(name = "STREET_ADDRESS_TWO", nullable = false)
+    @Column(name = "STREET_ADDRESS_TWO")
     var streetAddressTwo: String? = null
 
     @Column(name = "ZIP_CODE", nullable = false)

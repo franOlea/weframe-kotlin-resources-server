@@ -15,8 +15,8 @@ open class UserPicture {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = [CascadeType.ALL])
-    @JoinColumn(name = "PICTURE", nullable = false)
+            cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "PICTURE")
     @RestResource(exported=false)
     var picture: Picture? = null
 

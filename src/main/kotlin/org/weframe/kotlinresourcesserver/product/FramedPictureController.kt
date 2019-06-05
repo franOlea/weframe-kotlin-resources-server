@@ -4,7 +4,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import javax.websocket.server.PathParam
 
 @RestController
 @RequestMapping("/framed-pictures")
@@ -18,7 +17,7 @@ class FramedPictureController(val repository: FramedPictureRepository) {
     }
 
     @RequestMapping(value = ["/{id}"], method = [RequestMethod.DELETE])
-    fun delete(@PathParam("id") id: Long, principal: Principal): ResponseEntity<String> {
+    fun delete(@PathVariable("id") id: Long, principal: Principal): ResponseEntity<String> {
         repository.deleteByUserAndId(principal.name, id)
         return ResponseEntity.ok("")
     }
