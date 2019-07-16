@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.POST, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.GET, "/ping").permitAll()
         .anyRequest().authenticated();
   }
 
