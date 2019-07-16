@@ -15,6 +15,7 @@ import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureController
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureRepository
+import org.weframe.kotlinresourcesserver.purchase.PurchaseRepository
 import java.security.Principal
 import org.junit.Test as test
 import org.junit.Before as before
@@ -28,6 +29,7 @@ class UserPictureControllerTest {
     var userPictureRepository: UserPictureRepository? = null
     var pictureRepository: PictureRepository? = null
     var service: PictureFileService? = null
+    var purchaseRepository: PurchaseRepository? = null
 
     @before fun setUp() {
         userPicture = mock(UserPicture::class.java)
@@ -36,16 +38,17 @@ class UserPictureControllerTest {
         picture = mock(Picture::class.java)
         service = mock(PictureFileService::class.java)
         pictureRepository = mock(PictureRepository::class.java)
+        purchaseRepository = mock(PurchaseRepository::class.java)
     }
 
     @test fun create() {
-        UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
+        UserPictureController(userPictureRepository!!, pictureRepository!!, service!!, purchaseRepository!!)
     }
 
     @Ignore
     @test fun createUserPicture() {
         whenever(principal!!.name).thenReturn(principalName)
-        val controller = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!)
+        val controller = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!, purchaseRepository!!)
         controller.create(picture!!, principal!!)
         verify(userPictureRepository, times(1))!!
                 .save(any(UserPicture::class.java))
@@ -59,7 +62,7 @@ class UserPictureControllerTest {
                 .thenReturn(PageImpl(userPictures, PageRequest(0, 1), 1L))
         whenever(principal!!
                 .name).thenReturn(principalName)
-        val response = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!).getAll(1,1, principal!!)
+        val response = UserPictureController(userPictureRepository!!, pictureRepository!!, service!!, purchaseRepository!!).getAll(1,1, principal!!)
         assertThat(response.statusCode, `is`(HttpStatus.OK))
         assertThat(response.body.content.contains(userPicture), `is`(true))
     }

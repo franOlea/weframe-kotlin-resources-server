@@ -57,4 +57,13 @@ class FrameController(private val repository: FrameRepository,
         return ResponseEntity.ok(resource)
     }
 
+    @RequestMapping(method = [RequestMethod.DELETE], value = ["/frames/{id}"])
+    @ResponseBody
+    fun deleteFrame(@PathVariable("id") id: Long): ResponseEntity<*> {
+        val frame = repository.findOne(id)
+        frame.deleted = true
+        repository.save(frame)
+        return ResponseEntity.ok("")
+    }
+
 }

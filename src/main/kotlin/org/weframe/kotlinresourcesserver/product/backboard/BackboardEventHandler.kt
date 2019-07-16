@@ -35,7 +35,7 @@ class BackboardController(private val repository: BackboardRepository,
     @RequestMapping(method = [RequestMethod.GET], value = ["/backboards"])
     @ResponseBody fun getBackboards(@RequestParam(value="page", defaultValue="0") page: Int,
                                     @RequestParam(value="size", defaultValue="10") size: Int): ResponseEntity<Resources<Backboard>>? {
-        val backboards = repository.findAll(PageRequest(page, size))
+        val backboards = repository.findByDeleted(false, PageRequest(page, size))
         backboards.content.forEach {
             backboard -> backboard.picture!!.url = pictureService.generatePictureUrl(backboard.picture!!.key!!, true)
         }
@@ -55,6 +55,15 @@ class BackboardController(private val repository: BackboardRepository,
         backboard.picture!!.url = pictureService.generatePictureUrl(backboard.picture!!.key!!, false)
         val resource = Resource(backboard)
         return ResponseEntity.ok(resource)
+    }
+
+    @RequestMapping(method = [RequestMethod.DELETE], value = ["/backboards/{id}"])
+    @ResponseBody
+    fun deleteBackboard(@PathVariable("id") id: Long): ResponseEntity<*> {
+        val backboard = repository.findOne(id)
+        backboard.deleted = true
+        repository.save(backboard)
+        return ResponseEntity.ok("")
     }
 
 }

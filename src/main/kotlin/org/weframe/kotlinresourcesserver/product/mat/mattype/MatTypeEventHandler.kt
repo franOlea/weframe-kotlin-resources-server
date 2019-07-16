@@ -58,4 +58,13 @@ class MatTypeController(private val repository: MatTypeRepository,
         return ResponseEntity.ok(resource)
     }
 
+    @RequestMapping(method = [RequestMethod.DELETE], value = ["/mat-types/{id}"])
+    @ResponseBody
+    fun delete(@PathVariable("id") id: Long): ResponseEntity<*> {
+        val matType = repository.findOne(id)
+        matType.deleted = true
+        repository.save(matType)
+        return ResponseEntity.ok("")
+    }
+
 }

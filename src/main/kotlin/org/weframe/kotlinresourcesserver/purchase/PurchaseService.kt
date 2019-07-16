@@ -21,6 +21,7 @@ import org.weframe.kotlinresourcesserver.product.backboard.BackboardRepository
 import org.weframe.kotlinresourcesserver.product.frame.FrameRepository
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatTypeRepository
 import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
+import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPictureRepository
 import java.security.Principal
 import java.text.DecimalFormat
@@ -137,4 +138,5 @@ class PurchaseController(private val repo: PurchaseRepository,
 interface PurchaseRepository : PagingAndSortingRepository<Purchase, Long> {
     fun findByUser(user: String, pageable: Pageable): Page<Purchase>
     fun findByStatus(status: PurchaseStatus, pageable: Pageable): Page<Purchase>
+    fun countByUserPicture(userPicture: UserPicture): Long
 }

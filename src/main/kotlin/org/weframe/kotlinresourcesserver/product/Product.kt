@@ -1,5 +1,6 @@
 package org.weframe.kotlinresourcesserver.product
 
+import org.hibernate.annotations.ColumnDefault
 import javax.persistence.*
 
 /**
@@ -19,6 +20,10 @@ abstract class Product {
     @Column(name = "description", nullable = false, unique = true)
     var description: String? = null
 
+    @Column(name = "deleted", nullable = false, unique = false)
+    @ColumnDefault(value = "false")
+    var deleted: Boolean? = null
+
     /**
      * DO NOT USE, needed for JPA only.
      */
@@ -27,6 +32,7 @@ abstract class Product {
     constructor(name: String, description: String) {
         this.name = name
         this.description = description
+        this.deleted = false;
     }
 
     override fun toString(): String {
