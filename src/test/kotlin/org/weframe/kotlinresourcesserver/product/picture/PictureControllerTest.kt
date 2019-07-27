@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.weframe.kotlinresourcesserver.product.picture.file.MultipartFileReader
 import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import java.awt.image.BufferedImage
+import java.io.InputStream
 import org.junit.Before as before
 import org.junit.Test as test
 
@@ -23,6 +24,7 @@ class PictureControllerTest {
     var picture: Picture? = null
     var image: BufferedImage? = null
     var multipartFile: MultipartFile? = null
+    var inputStream: InputStream? = null
 
     @before fun setUp() {
         fileService = mock(PictureFileService::class.java)
@@ -31,6 +33,7 @@ class PictureControllerTest {
         picture = mock(Picture::class.java)
         image = mock(BufferedImage::class.java)
         multipartFile = mock(MultipartFile::class.java)
+        inputStream = mock(InputStream::class.java)
     }
 
     @test fun create() {
@@ -40,9 +43,11 @@ class PictureControllerTest {
     @test fun uploadPicture() {
         val controller = PictureController(fileService!!, repository!!, fileReader!!)
         `when`(fileReader!!.read(multipartFile!!)).thenReturn(image)
+        `when`(multipartFile!!.inputStream).thenReturn(inputStream)
         val response = controller.create(multipartFile!!, pictureName, formatName)
         verify(fileService, times(1))!!.savePicture(any(), anyString(), anyString())
         verify(repository, times(1))!!.save(any(Picture::class.java))
+        verify(inputStream, times(1))!!.close()
         assertThat(response.statusCode, `is`(HttpStatus.OK))
     }
 

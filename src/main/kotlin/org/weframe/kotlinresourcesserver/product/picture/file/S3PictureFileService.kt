@@ -10,6 +10,8 @@ import java.time.Instant
 import java.util.*
 import javax.imageio.ImageIO
 import com.amazonaws.services.s3.model.PutObjectRequest
+import net.coobird.thumbnailator.Thumbnails
+import net.coobird.thumbnailator.resizers.Resizer
 import java.io.ByteArrayInputStream
 
 
@@ -25,7 +27,8 @@ class S3PictureFileService(private val amazonS3Client: AmazonS3Client, private v
     override fun generatePictureUrl(key: String, thumbnail: Boolean): String? {
         val expiration = Instant.now()
         val expirationTime = (1000 * 60 * 60).toLong() // 1 hour.
-        val generatePresignedUrlRequest = GeneratePresignedUrlRequest(bucketName, key)
+        val generatePresignedUrlRequest = GeneratePresignedUrlRequest(
+                bucketName, "$key${if(thumbnail) "-thumbnail" else ""}")
         val linkExpirationDate = Date(expiration.plusMillis(expirationTime).toEpochMilli())
         generatePresignedUrlRequest.method = HttpMethod.GET // Default.
         generatePresignedUrlRequest.expiration = linkExpirationDate
@@ -34,6 +37,14 @@ class S3PictureFileService(private val amazonS3Client: AmazonS3Client, private v
     }
 
     override fun savePicture(bufferedImage: BufferedImage, key: String, formatName: String) {
+        writePictureToS3(bufferedImage, formatName, key)
+        val thumbnail = Thumbnails.of(bufferedImage)
+                .size(1000, 1000)
+                .asBufferedImage()
+        writePictureToS3(thumbnail, formatName, "$key-thumbnail")
+    }
+
+    fun writePictureToS3(bufferedImage: BufferedImage, formatName: String, key: String) {
         val os = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, formatName, os)
         val buffer = os.toByteArray()

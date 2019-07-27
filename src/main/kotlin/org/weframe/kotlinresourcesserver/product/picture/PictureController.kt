@@ -19,6 +19,7 @@ class PictureController(val fileService: PictureFileService, val repository: Pic
         val key = UUID.randomUUID().toString()
         fileService.savePicture(image, key, imageFormatName)
         val savedPicture = repository.save(Picture(name, key))
+        multipartFile.inputStream.close()
         return ResponseEntity.ok(savedPicture)
     }
 
