@@ -14,10 +14,10 @@ abstract class Product {
     @Column(name = "ID")
     var id: Long = 0
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = false)
     var name: String? = null
 
-    @Column(name = "description", nullable = false, unique = true)
+    @Column(name = "description", nullable = false, unique = false)
     var description: String? = null
 
     @Column(name = "deleted", nullable = false, unique = false)

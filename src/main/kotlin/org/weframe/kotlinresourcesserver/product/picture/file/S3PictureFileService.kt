@@ -4,18 +4,14 @@ import com.amazonaws.HttpMethod
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import net.coobird.thumbnailator.Thumbnails
 import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.util.*
 import javax.imageio.ImageIO
-import com.amazonaws.services.s3.model.PutObjectRequest
-import net.coobird.thumbnailator.Thumbnails
-import net.coobird.thumbnailator.resizers.Resizer
-import java.io.ByteArrayInputStream
-
-
-
 
 class S3PictureFileService(private val amazonS3Client: AmazonS3Client, private val bucketName: String) : PictureFileService {
 
