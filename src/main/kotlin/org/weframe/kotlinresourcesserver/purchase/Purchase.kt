@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.springframework.data.rest.core.annotation.RestResource
 import org.weframe.kotlinresourcesserver.product.backboard.Backboard
 import org.weframe.kotlinresourcesserver.product.frame.Frame
+import org.weframe.kotlinresourcesserver.product.frameglass.FrameGlass
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatType
 import org.weframe.kotlinresourcesserver.product.picture.user.UserPicture
 import javax.persistence.*
@@ -53,6 +54,14 @@ open class Purchase {
 
     @Column(name = "FRONT_MAT_PRICE", nullable = false)
     var frontMatPrice: Float? = null
+
+    @ManyToOne(cascade = [CascadeType.MERGE])
+    @JoinColumn(name = "FRAME_GLASS", nullable = false)
+    @RestResource(exported = false)
+    var frameGlass: FrameGlass? = null
+
+    @Column(name = "FRAME_GLASS_PRICE", nullable = false)
+    var frameGlassPrice: Float? = null
 
     @Column(name = "STAMP_DATETIME", nullable = false)
     var stampDatetime: Long? = null

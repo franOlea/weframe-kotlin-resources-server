@@ -18,6 +18,7 @@ import org.springframework.hateoas.Resources
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.weframe.kotlinresourcesserver.product.backboard.BackboardRepository
+import org.weframe.kotlinresourcesserver.product.frame.Frame
 import org.weframe.kotlinresourcesserver.product.frame.FrameRepository
 import org.weframe.kotlinresourcesserver.product.mat.mattype.MatTypeRepository
 import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
@@ -28,6 +29,7 @@ import java.text.DecimalFormat
 import java.time.Instant
 import java.util.*
 import javax.servlet.http.HttpServletResponse
+import kotlin.math.roundToInt
 
 
 @RestController
@@ -55,6 +57,12 @@ class PurchaseController(private val repo: PurchaseRepository,
         purchase.status = PurchaseStatus.PENDING
         purchase.stampDatetime = Instant.now().toEpochMilli()
 
+        try {
+            validatePurchasePrice(purchase)
+        } catch(e: IllegalPurchaseException) {
+            return ResponseEntity.badRequest().build()
+        }
+
         val preference = Preference()
         val item = Item()
         item.id = UUID.randomUUID().toString()
@@ -76,6 +84,19 @@ class PurchaseController(private val repo: PurchaseRepository,
         val savedPreference = preference.save()
         purchase.transactionInitialPoint = savedPreference.initPoint
         return ResponseEntity.ok(repo.save(purchase))
+    }
+
+    fun validatePurchasePrice(purchase: Purchase) {
+        if(purchase.frame!!.price != purchase.framePrice
+            || purchase.backboardPrice!!.roundToInt() != calculatedPrice(purchase.frame!!, purchase.backboard!!.m2Price!!)
+            || purchase.frontMatPrice!!.roundToInt() != calculatedPrice(purchase.frame!!, purchase.frontMat!!.m2Price!!)
+            || purchase.frameGlassPrice!!.roundToInt() != calculatedPrice(purchase.frame!!, purchase.frameGlass!!.m2Price!!)) {
+            throw IllegalPurchaseException("The purchase price does not match the calculated price.")
+        }
+    }
+
+    fun calculatedPrice(frame : Frame, m2Price : Float): Int {
+        return (m2Price * (frame.height!! / 100) * (frame.length!! / 100)).roundToInt()
     }
 
     fun roundTwoDecimals(d: Float): Float {
@@ -140,3 +161,5 @@ interface PurchaseRepository : PagingAndSortingRepository<Purchase, Long> {
     fun findByStatus(status: PurchaseStatus, pageable: Pageable): Page<Purchase>
     fun countByUserPicture(userPicture: UserPicture): Long
 }
+
+class IllegalPurchaseException(message: String): Exception(message)

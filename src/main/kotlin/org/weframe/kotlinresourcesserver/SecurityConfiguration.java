@@ -22,6 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private static final String FRAMES_URL = "/frames/**";
   private static final String MAT_TYPES_URL = "/mat-types/**";
   private static final String FRAME_GLASS = "/frame-glasses/**";
+  private static final String PURCHASE = "/purchases/**";
 
   @Value(value = "${auth0.apiAudience}")
   private String apiAudience;
@@ -39,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.DELETE, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.DELETE, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.DELETE, FRAME_GLASS).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.DELETE, PURCHASE).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.POST, FRAMES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.POST, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.POST, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
@@ -47,11 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.PUT, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PUT, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PUT, FRAME_GLASS).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.PUT, PURCHASE).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PATCH, FRAMES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PATCH, BACKBOARDS_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PATCH, MAT_TYPES_URL).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.PATCH, FRAME_GLASS).hasRole(ADMIN_ROLE)
-        .antMatchers(HttpMethod.DELETE, PICTURES_URL).hasRole(ADMIN_ROLE)
+        .antMatchers(HttpMethod.PATCH, PURCHASE).hasRole(ADMIN_ROLE)
         .antMatchers(HttpMethod.GET, "/ping").permitAll()
         .anyRequest().authenticated();
   }
