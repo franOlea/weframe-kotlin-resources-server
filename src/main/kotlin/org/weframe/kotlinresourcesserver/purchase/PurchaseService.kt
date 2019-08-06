@@ -137,6 +137,12 @@ class PurchaseController(private val repo: PurchaseRepository,
         } else {
             repo.findAll(pageRequest)
         }
+        pagedResponse.content.forEach { purchase ->
+            purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
+            purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)
+            purchase.frontMat!!.picture!!.url = pictureService.generatePictureUrl(purchase.frontMat!!.picture!!.key!!, true)
+            purchase.userPicture!!.picture!!.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
+        }
 
         val userPicturesPage = PagedResources.PageMetadata(
                 pagedResponse.size.toLong(),
