@@ -69,7 +69,7 @@ class PurchaseController(private val repo: PurchaseRepository,
                 item.title = "Marco personalizado"
                 item.quantity = 1
                 item.currencyId = "ARS"
-                item.unitPrice = roundTwoDecimals(purchase.backboardPrice!! + purchase.framePrice!! + purchase.frontMatPrice!!)
+                item.unitPrice = roundTwoDecimals(purchase.backboardPrice!! + purchase.framePrice!! + purchase.frontMatPrice!! + purchase.frameGlassPrice!!)
         val payer = Payer()
         payer.email = email
         preference.payer = payer
@@ -83,7 +83,8 @@ class PurchaseController(private val repo: PurchaseRepository,
         preference.backUrls = backUrls
         val savedPreference = preference.save()
         purchase.transactionInitialPoint = savedPreference.initPoint
-        return ResponseEntity.ok(repo.save(purchase))
+        val savedPurchase = repo.save(purchase)
+        return ResponseEntity.ok(savedPurchase)
     }
 
     fun validatePurchasePrice(purchase: Purchase) {
@@ -110,7 +111,7 @@ class PurchaseController(private val repo: PurchaseRepository,
             @RequestParam("size") size: Int,
             principal: Principal) : ResponseEntity<Resources<Purchase>> {
         val email = JWT.decode((principal as AuthenticationJsonWebToken).token).getClaim("https://email").asString()
-        val pagedResponse = repo.findByUser(email, PageRequest(page, size))
+        val pagedResponse = repo.findByUser(email, PageRequest(page, size, Sort(Sort.Direction.DESC, "lastModifiedDate")))
         pagedResponse.content.forEach { purchase ->
             purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
             purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)

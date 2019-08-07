@@ -27,7 +27,7 @@ open class Purchase {
     var user: String? = null
 
     @ManyToOne(cascade = [CascadeType.MERGE])
-    @JoinColumn(name = "USER_PICTURE", nullable = false)
+    @JoinColumn(name = "USER_PICTURE", nullable = true)
     @RestResource(exported = false)
     var userPicture: UserPicture? = null
 
