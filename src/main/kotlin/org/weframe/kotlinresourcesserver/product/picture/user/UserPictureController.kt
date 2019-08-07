@@ -9,6 +9,7 @@ import org.weframe.kotlinresourcesserver.product.picture.Picture
 import org.weframe.kotlinresourcesserver.product.picture.PictureRepository
 import org.weframe.kotlinresourcesserver.product.picture.file.PictureFileService
 import org.weframe.kotlinresourcesserver.purchase.PurchaseRepository
+import org.weframe.kotlinresourcesserver.purchase.PurchaseStatus
 import java.security.Principal
 
 @RestController
@@ -44,16 +45,17 @@ class UserPictureController(private val userPictureRepository: UserPictureReposi
     @RequestMapping(value = ["/{id}"], method = [RequestMethod.DELETE])
     fun delete(@PathVariable("id") id: Long) : ResponseEntity<String> {
         val userPicture = userPictureRepository.findOne(id)
-        val countByUserPicture = purchaseRepository.countByUserPicture(userPicture)
-        return if(countByUserPicture > 0) {
-            ResponseEntity.status(409).build()
-        } else {
-            val pictureId = userPicture.picture!!.id!!
-            userPicture.picture = null
-            pictureRepository.delete(pictureId)
-            userPictureRepository.delete(userPicture.id)
-            ResponseEntity.ok().build()
+        val purchases = purchaseRepository.findByUserPicture(userPicture)
+        purchases.forEach {
+            it.userPicture = null
         }
+        val pictureId = userPicture.picture!!.id!!
+        userPicture.picture = null
+        purchaseRepository.save(purchases)
+        pictureRepository.delete(pictureId)
+        userPictureRepository.delete(userPicture.id)
+        return ResponseEntity.ok().build()
+
     }
 
 }

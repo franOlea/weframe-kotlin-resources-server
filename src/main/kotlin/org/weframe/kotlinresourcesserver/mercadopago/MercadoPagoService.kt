@@ -19,7 +19,7 @@ class MercadoPagoPurchaseChecker(private val purchaseRepository: PurchaseReposit
 
     @Scheduled(fixedRate = 10_000)
     fun validatePaymentPendingPurchases() {
-        val openPurchases = purchaseRepository.findByStatus(PurchaseStatus.PENDING, PageRequest(0, 100))
+        val openPurchases = purchaseRepository.findByStatus(PurchaseStatus.PENDING, PageRequest(0, 10000))
         if(openPurchases.content.isNotEmpty()) {
             log.info("Found {} open purchases, checking for payments...", openPurchases.content.size)
             openPurchases.forEach { purchase ->
@@ -27,10 +27,20 @@ class MercadoPagoPurchaseChecker(private val purchaseRepository: PurchaseReposit
                 if(payments.results!!.isNotEmpty()) {
                     payments.results!!.forEach { payment ->
                         purchase.transactionStatus = payment.status.name
-                        purchase.status = PurchaseStatus.MAKING
+                        if(payment.status == Payment.Status.approved) {
+                            purchase.status = PurchaseStatus.MAKING
+                        } else {
+                            if(purchase.stampDatetime!! + (1000 * 60 * 60) < System.currentTimeMillis()) {
+                                purchase.status = PurchaseStatus.REJECTED
+                            }
+                        }
                     }
                     purchaseRepository.save(purchase)
                     log.info("Payment found saving purchase status.")
+                } else if(purchase.stampDatetime!! + (1000 * 60 * 60) < System.currentTimeMillis()) {
+                    purchase.status = PurchaseStatus.REJECTED
+                    purchaseRepository.save(purchase)
+                    log.info("Payment not found after an hour saving purchase status.")
                 }
             }
         }

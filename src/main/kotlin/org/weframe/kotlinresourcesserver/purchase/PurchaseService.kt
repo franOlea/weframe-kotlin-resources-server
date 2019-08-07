@@ -116,7 +116,9 @@ class PurchaseController(private val repo: PurchaseRepository,
             purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
             purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)
             purchase.frontMat!!.picture!!.url = pictureService.generatePictureUrl(purchase.frontMat!!.picture!!.key!!, true)
-            purchase.userPicture!!.picture!!.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
+            if(purchase.userPicture != null) {
+                purchase.userPicture!!.picture!!.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
+            }
         }
         val purchasesPage = PagedResources.PageMetadata(
                 pagedResponse.size.toLong(),
@@ -142,7 +144,7 @@ class PurchaseController(private val repo: PurchaseRepository,
             purchase.frame!!.picture!!.url = pictureService.generatePictureUrl(purchase.frame!!.picture!!.key!!, true)
             purchase.backboard!!.picture!!.url = pictureService.generatePictureUrl(purchase.backboard!!.picture!!.key!!, true)
             purchase.frontMat!!.picture!!.url = pictureService.generatePictureUrl(purchase.frontMat!!.picture!!.key!!, true)
-            purchase.userPicture!!.picture!!.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
+            purchase.userPicture?.picture?.url = pictureService.generatePictureUrl(purchase.userPicture!!.picture!!.key!!, true)
         }
 
         val userPicturesPage = PagedResources.PageMetadata(
@@ -166,7 +168,7 @@ class PurchaseController(private val repo: PurchaseRepository,
 interface PurchaseRepository : PagingAndSortingRepository<Purchase, Long> {
     fun findByUser(user: String, pageable: Pageable): Page<Purchase>
     fun findByStatus(status: PurchaseStatus, pageable: Pageable): Page<Purchase>
-    fun countByUserPicture(userPicture: UserPicture): Long
+    fun findByUserPicture(userPicture: UserPicture): List<Purchase>
 }
 
 class IllegalPurchaseException(message: String): Exception(message)
