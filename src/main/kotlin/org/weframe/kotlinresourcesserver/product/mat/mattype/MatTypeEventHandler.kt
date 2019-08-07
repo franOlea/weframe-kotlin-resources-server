@@ -36,7 +36,7 @@ class MatTypeController(private val repository: MatTypeRepository,
     @ResponseBody
     fun getMatTypes(@RequestParam(value="page", defaultValue="0") page: Int,
                   @RequestParam(value="size", defaultValue="10") size: Int): ResponseEntity<Resources<MatType>>? {
-        val matTypes = repository.findAll(PageRequest(page, size))
+        val matTypes = repository.findByDeleted(false, PageRequest(page, size))
         matTypes.content.forEach {
             matType -> matType.picture!!.url = pictureService.generatePictureUrl(matType.picture!!.key!!, true)
         }

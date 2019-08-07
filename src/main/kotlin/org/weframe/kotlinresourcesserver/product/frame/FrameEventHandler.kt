@@ -35,7 +35,7 @@ class FrameController(private val repository: FrameRepository,
     @ResponseBody
     fun getFrames(@RequestParam(value="page", defaultValue="0") page: Int,
                       @RequestParam(value="size", defaultValue="10") size: Int): ResponseEntity<PagedResources<Frame>> {
-        val frames = repository.findAll(PageRequest(page, size))
+        val frames = repository.findByDeleted(false, PageRequest(page, size))
         frames.content.forEach {
             frame -> frame.picture!!.url = pictureService.generatePictureUrl(frame.picture!!.key!!, true)
         }
