@@ -24,7 +24,6 @@ class FrameEventHandler(private val pictureRepository: PictureRepository) {
         val picture = pictureRepository.findByKey(frame.picture!!.key!!)
         frame.picture = picture
     }
-
 }
 
 @RepositoryRestController

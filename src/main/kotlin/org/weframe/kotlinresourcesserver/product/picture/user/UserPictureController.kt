@@ -21,6 +21,9 @@ class UserPictureController(private val userPictureRepository: UserPictureReposi
 
     @RequestMapping(method = [RequestMethod.POST], value = [""])
     fun create(@RequestBody picture: Picture, principal: Principal): ResponseEntity<UserPicture> {
+        if(MAX_USER_PICTURES_PER_USER <= userPictureRepository.countByUser(principal.name)) {
+            return ResponseEntity.status(409).build()
+        }
         val userPicture = UserPicture(pictureRepository.findByKey(picture.key!!), principal.name)
         userPicture.picture!!.url = pictureService.generatePictureUrl(userPicture.picture!!.key!!, true)
         return ResponseEntity.ok(userPictureRepository.save(userPicture))
@@ -56,6 +59,10 @@ class UserPictureController(private val userPictureRepository: UserPictureReposi
         userPictureRepository.delete(userPicture.id)
         return ResponseEntity.ok().build()
 
+    }
+
+    companion object {
+        private const val MAX_USER_PICTURES_PER_USER = 5L
     }
 
 }

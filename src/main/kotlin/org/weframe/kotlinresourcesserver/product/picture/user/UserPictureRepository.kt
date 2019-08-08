@@ -6,4 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface UserPictureRepository : PagingAndSortingRepository<UserPicture, Long> {
     fun findByUser(user: String, pageable: Pageable): Page<UserPicture>
+    fun countByUser(user: String): Long
 }

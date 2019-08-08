@@ -17,6 +17,13 @@ class MercadoPagoPurchaseChecker(private val purchaseRepository: PurchaseReposit
 
     private val log = LoggerFactory.getLogger(MercadoPagoPurchaseChecker::class.java)
 
+    @Scheduled(fixedRate = 1000 * 60 * 60)
+    fun refreshToken() {
+        log.info("Refreshing Mercado Pago token...")
+        MercadoPago.SDK.setAccessToken(null)
+        MercadoPago.SDK.getAccessToken()
+    }
+
     @Scheduled(fixedRate = 10_000)
     fun validatePaymentPendingPurchases() {
         val openPurchases = purchaseRepository.findByStatus(PurchaseStatus.PENDING, PageRequest(0, 10000))

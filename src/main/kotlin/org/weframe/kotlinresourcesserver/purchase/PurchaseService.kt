@@ -2,11 +2,13 @@ package org.weframe.kotlinresourcesserver.purchase
 
 import com.auth0.jwt.JWT
 import com.auth0.spring.security.api.authentication.AuthenticationJsonWebToken
+import com.mercadopago.MercadoPago
 import com.mercadopago.resources.Payment
 import com.mercadopago.resources.Preference
 import com.mercadopago.resources.datastructures.preference.BackUrls
 import com.mercadopago.resources.datastructures.preference.Item
 import com.mercadopago.resources.datastructures.preference.Payer
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.hateoas.PagedResources
 import org.springframework.hateoas.Resources
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.weframe.kotlinresourcesserver.product.backboard.BackboardRepository
@@ -40,6 +43,8 @@ class PurchaseController(private val repo: PurchaseRepository,
                          private val userPictureRepository: UserPictureRepository,
                          private val matTypeRepository: MatTypeRepository,
                          private val pictureService: PictureFileService) {
+
+    private val log = LoggerFactory.getLogger(PurchaseController::class.java)
 
     @Value(value = "\${mercado-pago.back.url.base}")
     private val backUrlBase: String? = null
@@ -83,8 +88,14 @@ class PurchaseController(private val repo: PurchaseRepository,
         preference.backUrls = backUrls
         val savedPreference = preference.save()
         purchase.transactionInitialPoint = savedPreference.initPoint
-        val savedPurchase = repo.save(purchase)
-        return ResponseEntity.ok(savedPurchase)
+        val statusCode = preference.lastApiResponse.statusCode
+        return if(statusCode in 201..399) {
+            val savedPurchase = repo.save(purchase)
+            ResponseEntity.ok(savedPurchase)
+        } else {
+            log.error("An unexpected error occurred while trying to save a payment preference.", statusCode)
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+        }
     }
 
     fun validatePurchasePrice(purchase: Purchase) {
